@@ -1,0 +1,6 @@
+{% extends "base.html" %} {% block body %}
+{{category.name}}
+ {% for project in projects %}
+{{project.title}} 
+{% endfor %}
+{% endblock body %}
