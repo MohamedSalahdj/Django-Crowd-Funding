@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
+    
 
     def  __str__(self):
         return self.name
@@ -56,6 +57,10 @@ class Project(models.Model):
     @classmethod
     def  get_project(cls,id):
         return cls.objects.get(id=id)
+    
+    @classmethod
+    def  get_project_by_name(cls,title):
+        return cls.objects.get(title=title)
 
     @classmethod
     def  delete_project(cls,id):
