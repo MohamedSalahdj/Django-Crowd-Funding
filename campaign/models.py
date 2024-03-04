@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
-from django.template.defaultfilters import slugify
+from django.utils.text import slugify
 
 
 
@@ -62,7 +62,7 @@ class Project(models.Model):
         return cls.objects.filter(id=id).delete()
     
     def GetImageURl(self):
-        return f'/media/{self.image}'
+        return self.image.url
 
 class ProjectImage(models.Model):
     image = models.ImageField(upload_to='projects/images',blank=True,null=True)
