@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # Libraries
     "django_bootstrap5",
+    "taggit",
 
     # Ourapps
     'campaign.apps.CampaignConfig',

@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
+from django.template.defaultfilters import slugify
 
 
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
-
 
     def  __str__(self):
         return self.name
@@ -29,15 +30,21 @@ class Category(models.Model):
 
 
 class Project(models.Model):
-    title = models.CharField(max_length=20)
-    details=models.TextField()
-    image=models.ImageField(upload_to='projects/images')
-    catergory=models.ForeignKey(Category, on_delete=models.CASCADE, related_name='projectCatergory')
-    owner=models.ForeignKey(User, on_delete=models.CASCADE, related_name='projectUser')
-    target=models.DecimalField(max_digits=10,decimal_places=2)
+    title = models.CharField(max_length=20, unique=True)
+    details = models.TextField()
+    image = models.ImageField(upload_to='projects/images')
+    catergory = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='projectCatergory')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projectUser')
+    target=models.DecimalField(max_digits=10, decimal_places=2)
     start_date=models.DateField(auto_now_add=True)
     end_date=models.DateField()
-    
+    tags = TaggableManager()
+    feature = models.BooleanField(default=False)
+    slug = models.SlugField(null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Project, self).save(*args, **kwargs) 
 
     def  __str__(self):
         return self.title
@@ -57,9 +64,6 @@ class Project(models.Model):
     def GetImageURl(self):
         return f'/media/{self.image}'
 
-
-
-
 class ProjectImage(models.Model):
-    image=models.ImageField(upload_to='projects/images',blank=True,null=True)
-    project=models.ForeignKey(Project,on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='projects/images',blank=True,null=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_images')
