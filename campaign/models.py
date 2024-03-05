@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django.utils.text import slugify
+from django.utils import timezone
 
 
 
@@ -78,3 +79,14 @@ class ProjectImage(models.Model):
 
     def __str__(self):
         return f'{self.project} -- {self.image.url}'
+    
+class Review(models.Model):
+    comment = models.CharField(max_length=255)
+    rate = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(User, related_name='user_review', on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, related_name='project_review', on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return f"{self.user} | {self.project} | 'comment' --> {self.comment}"

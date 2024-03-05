@@ -1,9 +1,11 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth.models import User
-from django.views.generic import ListView, CreateView, UpdateView
-from .models import Category, Project, ProjectImage
-from .forms import ProjectForm, ProjectImagesForm
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, CreateView, UpdateView
+from django.contrib.auth.models import User
+from .models import Category, Project, ProjectImage, Review
+from .forms import ProjectForm, ProjectImagesForm, ReviewForm
+
 
 class CategoryList(ListView):
     model = Category
@@ -28,12 +30,26 @@ def projects_list(request):
     except:
         return render(request, "notfound.html",{'msg':"projects Not Found"})
 
-def project_detail(request,project_slug):
+def project_detail(request, project_slug):
     try:
         project=Project.objects.get(slug=project_slug)
-        return render(request,"campaign/projectdetail.html",{'project':project})
+        all_reviews = Review.objects.filter(project=project)
+        if request.method == 'POST':
+            review_form = ReviewForm(request.POST)
+            if review_form.is_valid():
+                review_form = review_form.save(commit=False)
+                review_form.project = project
+                review_form.user = request.user
+                review_form.save()
+                review_form = ReviewForm()
+
+        else:
+            review_form = ReviewForm()
+        return render(request,"campaign/projectdetail.html",{'project':project, 'review_form': review_form, 'all_reviews':all_reviews})
+    
     except:
         return render(request, "notfound.html",{'msg':"project Not Found"})
+
 
 @login_required
 def delete_project(request,project_slug):
@@ -69,16 +85,24 @@ def create_project(request):
 
 
 def update_project(request, project_slug):
-    project = Project.objects.get(slug=project_slug)
+    project = get_object_or_404(Project, slug=project_slug)
+    project_images = ProjectImage.objects.filter(project=project)
+    print("here images",project_images)
     if request.method == 'POST':
         form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
-            form =  form.save(commit=False)
+            form = form.save(commit=False)
             form.owner = request.user
             form.save()
-            # form.save_m2m()
+        
+            # for image in request.FILES.getlist('images'):
+            #     project_image = ProjectImage.objects.create(project=form, image=image)
     else:
         form = ProjectForm(instance=project)
-
-    context = {'form':form}
+        # initial_images_data = [{'image': image.image} for image in project_images]
+        # print("all images",initial_images_data)
+        # # project_images_form = ProjectImagesForm(initial=initial_images_data)
+        
+    context = {'form': form}
+    # context = {'form': form, 'project_images_form': project_images_form}
     return render(request, 'campaign/update_project.html', context)
