@@ -7,7 +7,7 @@ from django.utils.text import slugify
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
-
+    slug = models.SlugField(null=True, blank=True)
     def  __str__(self):
         return self.name
     
@@ -17,7 +17,7 @@ class Category(models.Model):
     
     @classmethod
     def  get_category(cls,id):
-        return Category.objects.get(id=id)
+        return Category.objects.filter(id=id).first()
     
     @classmethod
     def  delete_category(cls,id):
@@ -26,7 +26,10 @@ class Category(models.Model):
     @classmethod
     def showCategory(cls):
         return [(i.id, i.name) for i in cls.objects.all()]
-
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs) 
 
 
 class Project(models.Model):
@@ -56,6 +59,10 @@ class Project(models.Model):
     @classmethod
     def  get_project(cls,id):
         return cls.objects.get(id=id)
+    
+    @classmethod
+    def  get_project_by_name(cls,title):
+        return cls.objects.get(title=title)
 
     @classmethod
     def  delete_project(cls,id):
@@ -67,3 +74,7 @@ class Project(models.Model):
 class ProjectImage(models.Model):
     image = models.ImageField(upload_to='projects/images',blank=True,null=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_images')
+
+
+    def __str__(self):
+        return f'{self.project} -- {self.image.url}'
