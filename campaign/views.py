@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.views .generic import CreateView, UpdateView
 
 from.models import Category, Project, ProjectImage
-from .forms import ProjectForm, PrjectImagesForm
+from .forms import ProjectForm, ProjectImagesForm
 
 
 
@@ -11,15 +11,20 @@ from .forms import ProjectForm, PrjectImagesForm
 def create_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST, request.FILES)
-        if form.is_valid():
-            form =  form.save(commit=False)
-            form.owner = request.user
-            form.save()
+        projectimagesform = ProjectImagesForm(request.POST, request.FILES)
+        if form.is_valid() and projectimagesform.is_valid():
+            project =  form.save(commit=False)
+            project.owner = request.user
+            project.save()
+            projectimagesform.save_images(project)
             # form.save_m2m()
     else:
         form = ProjectForm()
-
-    context = {'form':form}
+        projectimagesform = ProjectImagesForm()
+    context = {
+            'form':form,
+            'projectimagesform' : projectimagesform 
+        }
     return render(request, 'campaign/create_project.html', context)
 
 

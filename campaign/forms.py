@@ -6,7 +6,11 @@ class ProjectForm(forms.ModelForm):
         model = Project
         exclude = ('owner', 'start_date', 'slug', 'feature')
 
-class PrjectImagesForm(forms.ModelForm):
+class ProjectImagesForm(forms.ModelForm):
     class Meta:
         model = ProjectImage
-        fields = '__all__'
+        exclude = ('project',)
+
+    def save_images(self, project):
+        for img in self.cleaned_data['images']:
+            ProjectImage.objects.create(project=project, image=img)
