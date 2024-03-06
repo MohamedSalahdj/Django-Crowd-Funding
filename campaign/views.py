@@ -62,7 +62,7 @@ def delete_project(request,project_slug):
     try:
         project=Project.objects.get(slug=project_slug)
         if project.owner.id == User.id:
-            if Donate.objects.filter(project=project).aaggregate(Sum("donation_amount")) < project.target * 0.25:
+            if Donate.objects.filter(project=project).aggregate(Sum("donation_amount")) < project.target * 0.25:
                 Project.delete_project(id)
                 return redirect('showall')
             else:
