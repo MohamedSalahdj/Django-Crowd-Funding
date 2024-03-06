@@ -9,5 +9,6 @@ urlpatterns = [
     path("deleteproject/<slug:project_slug>/", delete_project, name="deletproject"),
     path('addproject/', create_project, name='add_project'),
     path('update/<slug:project_slug>', update_project, name='update_project'),
+    path('donate/<slug:project_slug>', donate_project, name='donate_project')
 ]
 

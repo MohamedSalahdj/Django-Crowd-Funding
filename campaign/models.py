@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django.utils.text import slugify
+from django.utils import timezone
 
 
 
@@ -83,8 +84,21 @@ class ProjectImage(models.Model):
 class Donate(models.Model):
     """Donation relationship between the user and the project"""
     donation_amount = models.PositiveBigIntegerField()
+    donated_time = models.DateTimeField(default=timezone.now)
     donator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='project_donator')
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='donated_project')
 
     def __str__(self):
-        return f'{self.donation_amount}'
+        return f'{self.donation_amount} |{self.project} | {self.donator} | {self.donated_time}'
+    
+
+class Review(models.Model):
+    comment = models.CharField(max_length=255)
+    rate = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(User, related_name='user_review', on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, related_name='project_review', on_delete=models.CASCADE)
+
+
+    def __str__(self):
+        return f"{self.user} | {self.project} | 'comment' --> {self.comment}"
