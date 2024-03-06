@@ -11,8 +11,8 @@
 <h1>sign up</h1>
 <form method="post" enctype="multipart/form-data" class="uniForm" novalidate>
     {% csrf_token %}
-    {{ form |crispy  }}
-    {{ form2 |crispy  }}
+    {{ form.as_p  }}
+    {{ form2.as_p   }}
   <button type="submit" class="btn btn-primary"> Register </button>
 </form>
 </div>
