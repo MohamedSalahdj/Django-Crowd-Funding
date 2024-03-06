@@ -42,11 +42,17 @@ INSTALLED_APPS = [
 
     # Libraries
     "django_bootstrap5",
+    'crispy_forms',
+    'crispy_bootstrap5',
 
     # Ourapps
     'campaign.apps.CampaignConfig',
   
 ]
+
+
+
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -132,7 +138,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR , "media/")
 
-LOGOUT_REDIRECT_URL = 'signup'
+LOGOUT_REDIRECT_URL = 'login'
 
 AUTHENTICATION_BACKENDS = [
     'account.backends.EmailBackend',
