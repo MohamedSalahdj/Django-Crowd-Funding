@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'account.apps.AccountConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
 
     # Ourapps
     'campaign.apps.CampaignConfig',
-    'account.apps.AccountConfig',
+  
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,18 @@
+
+{% extends 'base_generic.html' %}
+{% load static %}
+
+
+
+{% block content %}
+<div class="container">
+
+<h1>sign up</h1>
+<form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ form2.as_p }}
+  <button type="submit" class="btn btn-primary"> Register </button>
+</form>
+</div>
+{% endblock %}

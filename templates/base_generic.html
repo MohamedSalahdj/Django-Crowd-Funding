@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+</head>
+<body>
+
+<nav >
+    <div class="container">
+  
+            
+            {% if user.id %}
+                <div>
+                    <span class="navbar-text">
+                        Welcome {{ user.username }}
+                    </span>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-light ms-2">Logout</a>
+                </div>
+            {% else %}
+                <div >
+                    <a href="{% url 'login' %}" >Login</a>
+                    <a href="{% url 'signup' %}" >Register</a>
+                </div>
+            {% endif %}
+            
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

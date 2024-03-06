@@ -8,11 +8,9 @@ from .models import Category, Project, ProjectImage, Review, Donate
 from .forms import ProjectForm, ProjectImagesForm, ReviewForm, DonateForm
 from django.db.models import Sum
 
-
 class CategoryList(ListView):
     model = Category
     
-
 def show_by_category(request, category_name):
     try:
         category = Category.objects.get(slug=category_name)
