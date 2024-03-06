@@ -17,9 +17,7 @@ def signup(request):
             profile = form2.save(commit=False)
             profile.user = user 
           
-            profile.save()
-        else:
-            print(form2.errors)    
+            profile.save()   
 
     return render(request, 'registration/signup.html', {'form': form, 'form2': form2})
 

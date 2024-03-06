@@ -8,7 +8,6 @@ class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=15)
     last_name = forms.CharField(max_length=15)
     email = forms.EmailField()
-    
 
     class Meta:
         model = User
@@ -19,6 +18,7 @@ class SignUpForm(UserCreationForm):
         if User.objects.filter(username__iexact=username).exists():
             raise forms.ValidationError('Username already exists')
         return username
+        
 
 class SignUpForm2(forms.ModelForm):
     phone = forms.CharField(
