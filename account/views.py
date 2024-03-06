@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.contrib.auth import login
+from django.contrib.auth import login,authenticate
 from .forms import SignUpForm,SignUpForm2
+
 
 # Create your views here.
 
@@ -15,12 +16,11 @@ def signup(request):
         if form.is_valid() and form2.is_valid():
             user = form.save()
             profile = form2.save(commit=False)
-            profile.user = user 
-          
-            profile.save()   
-
+            profile.user = user
+            profile.save()
+    else:
+        form = SignUpForm()
+        form2 = SignUpForm2()
     return render(request, 'registration/signup.html', {'form': form, 'form2': form2})
-
-
 
 
