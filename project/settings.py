@@ -134,7 +134,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR , "media/")
 
 LOGOUT_REDIRECT_URL = 'signup'
 
-
+AUTHENTICATION_BACKENDS = [
+    'account.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+  
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
