@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from .models import Category, Project, ProjectImage, Review, Donate
 from .forms import ProjectForm, ProjectImagesForm, ReviewForm, DonateForm
 
@@ -45,7 +46,13 @@ def project_detail(request, project_slug):
 
         else:
             review_form = ReviewForm()
-        return render(request,"campaign/projectdetail.html",{'project':project, 'review_form': review_form, 'all_reviews':all_reviews})
+        
+        #handleing show project donations ---> ALIII
+        donations_models = Donate.objects.filter(project=project)
+        total_donations = 0
+        for model in donations_models:
+            total_donations += model.donation_amount
+        return render(request,"campaign/projectdetail.html",{'project':project, 'review_form': review_form, 'all_reviews':all_reviews, 'total_donations': total_donations})
     
     except:
         return render(request, "notfound.html",{'msg':"project Not Found"})
@@ -111,14 +118,13 @@ def donate_project(request, project_slug):
 
     # try:
         project = get_object_or_404(Project, slug=project_slug)
-        print(project)
         if request.method == 'POST':
             form = DonateForm(request.POST)
             if (form.is_valid()):
                 form = form.save()
                 print("Form saved")
                 project_detail(request, project_slug=project_slug)
-
+                return HttpResponseRedirect(reverse('project_details', kwargs= {'project_slug':project_slug}))
         form = DonateForm()
         context = {'form':form}
         return render(request,'campaign/donate_project.html', context=context )
