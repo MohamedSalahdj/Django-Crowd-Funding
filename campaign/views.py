@@ -82,3 +82,8 @@ def update_project(request, project_slug):
 
     context = {'form':form}
     return render(request, 'campaign/update_project.html', context)
+
+
+
+def donate_project(request, project_slug):
+   pass
