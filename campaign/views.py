@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from .models import Category, Project, ProjectImage, Review, Donate
 from .forms import ProjectForm, ProjectImagesForm, ReviewForm, DonateForm
+from django.db.models import Sum
 
 
 class CategoryList(ListView):
@@ -13,8 +14,6 @@ class CategoryList(ListView):
     
 
 def show_by_category(request, category_name):
-    # category = Category.objects.get(id=id)
-    # return render(request,'campaign/showbyCategory.html',{'category':category})
     try:
         category = Category.objects.get(slug=category_name)
         projects = Project.objects.filter(catergory=category)
@@ -63,8 +62,11 @@ def delete_project(request,project_slug):
     try:
         project=Project.objects.get(slug=project_slug)
         if project.owner.id == User.id:
-            Project.delete_project(id)
-            return redirect('showall')
+            if Donate.objects.filter(project=project).aaggregate(Sum("donation_amount")) < project.target * 0.25:
+                Project.delete_project(id)
+                return redirect('showall')
+            else:
+                return render(request, "notfound.html",{'msg':"You Can't delete  this project!"})
         else:
             return render(request, "notfound.html",{'msg':"You Can't delete  this project!"})
     except:
