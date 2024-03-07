@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
-from campaign.models import Project, Review
 from django.contrib.auth.models import User
+from campaign.models import Project, Review
 
 class ReportProject(models.Model):
     reason = models.TextField()
