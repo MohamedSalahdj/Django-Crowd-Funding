@@ -20,7 +20,6 @@ def show_by_category(request, category_name):
     except:
         return render(request, "notfound.html",{'msg':"category Not Found"}) 
 
-
 def projects_list(request):
     try:
         projects=Project.AllProject()
@@ -28,9 +27,11 @@ def projects_list(request):
     except:
         return render(request, "notfound.html",{'msg':"projects Not Found"})
 
+
 def project_detail(request, project_slug):
-    try:
-        project=Project.objects.get(slug=project_slug)
+    # try:
+        project = Project.objects.get(slug=project_slug)
+        similar_five_projects = Project.similar_projects(project)
         all_reviews = Review.objects.filter(project=project)
         if request.method == 'POST':
             review_form = ReviewForm(request.POST)
@@ -40,19 +41,25 @@ def project_detail(request, project_slug):
                 review_form.user = request.user
                 review_form.save()
                 review_form = ReviewForm()
-
         else:
             review_form = ReviewForm()
         
-        #handleing show project donations ---> ALIII
         donations_models = Donate.objects.filter(project=project)
         total_donations = 0
         for model in donations_models:
             total_donations += model.donation_amount
-        return render(request,"campaign/projectdetail.html",{'project':project, 'review_form': review_form, 'all_reviews':all_reviews, 'total_donations': total_donations})
+
+        context = {
+                'project': project, 
+                'review_form': review_form, 
+                'all_reviews': all_reviews, 
+                'total_donations': total_donations,
+                'similar_projects': similar_five_projects 
+        }
+        return render(request, "campaign/projectdetail.html", context)
     
-    except:
-        return render(request, "notfound.html",{'msg':"project Not Found"})
+    # except:
+    #     return render(request, "notfound.html",{'msg':"project Not Found"})
 
 
 @login_required
@@ -71,6 +78,7 @@ def delete_project(request,project_slug):
         return render(request, "notfound.html",{'msg':"project Not Found"})
 
 
+@login_required
 def create_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST, request.FILES)
@@ -91,6 +99,7 @@ def create_project(request):
     return render(request, 'campaign/create_project.html', context)
 
 
+@login_required
 def update_project(request, project_slug):
     project = get_object_or_404(Project, slug=project_slug)
     project_images = ProjectImage.objects.filter(project=project)
@@ -114,6 +123,7 @@ def update_project(request, project_slug):
     # context = {'form': form, 'project_images_form': project_images_form}
     return render(request, 'campaign/update_project.html', context)
 
+@login_required
 def donate_project(request, project_slug):
 
     # try:
