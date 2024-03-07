@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class='text-center mt-3'>Your Donations</h1>
+
+    <div class='container'>
+       <ul>
+        {% for donate in user_donations  %}
+            <li>{{donate.donation_amount}} | {{donate.donated_time}} | {{donate.project}}</li>
+        {% endfor %}
+       </ul>
+    </div>
+
+
+{% endblock content %}

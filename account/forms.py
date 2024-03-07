@@ -50,3 +50,7 @@ class SignUpForm2(forms.ModelForm):
         fields = ['phone', 'image','birth_date','facebook_profile','country']
 
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name']

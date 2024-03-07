@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block body %}
+{% extends "base.html" %} {% block content %}
     {{project.title}}
     {{project.target}}
     <hr>
@@ -36,4 +36,4 @@
     {% for review in all_reviews %}
         <p>{{review.user}} |  {{review.comment}} | </p> 
     {% endfor %}
-{% endblock body %}
+{% endblock content %}

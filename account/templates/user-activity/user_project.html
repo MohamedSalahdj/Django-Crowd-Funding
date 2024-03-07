@@ -1,5 +1,17 @@
-<h1>user Projects</h1>
+{% extends "base.html" %}
+{% block content %}
+    
+<h1 class='text-center mt-3'>Your Projects</h1>
 
-{% for project in projects  %}
-    <p>{{project}}</p>
-{% endfor %}
+    <div class='container'>
+       <ul>
+        {% for project in projects  %}
+            <li>{{project}} | {{project.details}} | {{project.target}}</li>
+        {% endfor %}
+       </ul>
+    </div>
+
+
+{% endblock content %}
+
+

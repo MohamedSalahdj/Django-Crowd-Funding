@@ -68,7 +68,14 @@ def user_projects(request):
 
 @login_required
 def user_donations(request):
-    pass
+    user_donations = Donate.objects.filter(donator=request.user)
+    
+    context = {
+        'user_donations' : user_donations
+    }
+
+    return render(request, 'user-activity/user_donations.html', context)
+
 
 @login_required
 def delete_profile(request):
