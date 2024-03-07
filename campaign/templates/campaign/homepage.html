@@ -1,0 +1,28 @@
+<form action="">
+    <input type="text" name="search" placeholder="Search by title" value="{{request.GET.title}}">
+    <input type="submit" value="Search">
+</form>
+
+<h1>Latest Projects</h1>
+<ul>
+    {% for project in latest_projects %}
+    <li><a href="{% url 'project_details' project.slug %}">{{project.title}}</a></li>
+    {% endfor %}
+</ul>
+
+
+<h1>Featured Projects</h1>
+<ul>
+    {% for project in featured_projects %}
+    <li><a href="{% url 'project_details' project.slug %}">{{project.title}}</a></li>
+    {% endfor %}
+</ul>
+
+<h1>Most Reviewd Projects</h1>
+<ul>
+    {% for projects in most_reviewed_projects %}
+    {% for project in projects %}
+    <li><a href="{% url 'project_details' project.slug %}">{{project.title}}</a></li>
+    {% endfor %}
+    {% endfor %}
+</ul>

@@ -1,0 +1,13 @@
+<h1>Matched Projects By Name</h1>
+    <ul>
+        {% for project in projects %}
+        <li><a href="{% url 'project_details' project.slug %}">{{project.title}}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h1>Matched Projects By Tags</h1>
+    <ul>
+        {% for project in projects_by_tag %}
+        <li><a href="{% url 'project_details' project.slug %}">{{project.title}}</a></li>
+        {% endfor %}
+    </ul>
