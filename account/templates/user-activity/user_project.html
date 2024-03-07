@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    
+<h1 class='text-center mt-3'>Your Projects</h1>
+
+    <div class='container'>
+       <ul>
+        {% for project in projects  %}
+            <li>{{project}} | {{project.details}} | {{project.target}}</li>
+        {% endfor %}
+       </ul>
+    </div>
+
+
+{% endblock content %}
+
+

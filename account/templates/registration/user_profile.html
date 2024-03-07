@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div class="container p-0">
+<br> <br>
+    <div class="row">
+        <div class="col-md-5 col-xl-4">
+            <div class="card">
+                <a class="list-group-item list-group-item-action active"  href="/" role="tab">
+                    Home
+                  </a>
+                  <a class="list-group-item list-group-item-action"  href="{% url 'user_projects' %}" role="tab">
+                    Your Projects
+                  </a>
+                  <a class="list-group-item list-group-item-action"  href="{% url 'user_donations' %}" role="tab">
+                    Your donations
+                  </a>
+                <div class="list-group list-group-flush" role="tablist">
+                    <a class="list-group-item list-group-item-action"  href="{% url 'edit_profile' %}" role="tab">
+                      Edit Profile
+                    </a>
+                    <a class="list-group-item list-group-item-action"  href="{% url 'password_change' %}" role="tab">
+                      change Password
+                    </a>
+                    <a class="list-group-item list-group-item-action"  href="{% url 'delete_profile' %}" role="tab">
+                        Delete profile
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 col-xl-8">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="account" role="tabpanel">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Account information</h5>
+                        </div>
+                        <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <h6 for="inputUsername"><strong>Username</strong> {{user}}</h3>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone"><strong> Phone Number</strong> {{user.phone}}</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone"> <strong> Email</strong> {{user.user.email}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-center">
+                                            {% if user.image %}
+                                            <img alt="{{user}}" src="{{user.image.url}}" width="128" height="128" style="border-radius: 75px;">
+                                            <div class="mt-2"></div>
+                                            <strong>{{user|title}}</strong>
+                                            {% else %}
+                                            <div class="mt-2"></div> 
+                                            {% comment %} Here will add profile icon {% endcomment %}
+                                            {% comment %} <img alt="{{user}}" src="{{user.image.url}}" width="128" height="128" style="border-radius: 75px;"> {% endcomment %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style type="text/css">
+body{
+    margin-top:20px;
+    background:#F0F8FF;
+}
+.card {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+}
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e5e9f2;
+    border-radius: .2rem;
+}
+.card-header:first-child {
+    border-radius: calc(.2rem - 1px) calc(.2rem - 1px) 0 0;
+}
+.card-header {
+    border-bottom-width: 1px;
+}
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    color: inherit;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e9f2;
+}
+</style>
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

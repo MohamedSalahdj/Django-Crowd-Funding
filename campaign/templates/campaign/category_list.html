@@ -1,6 +1,17 @@
-<h1>ALL Category</h1>
+{% extends "base.html" %}
+
+{% block content %}
+<div class='my-5'>
+    <h1 class='text-center'>ALL Category</h1>
     <ul>
         {% for category in category_list %}
         <a href="{% url 'category' category.slug %}"><li>{{category}}</li></a>
         {% endfor %}
     </ul>
+</div>
+
+{% endblock content %}
+
+
+
+

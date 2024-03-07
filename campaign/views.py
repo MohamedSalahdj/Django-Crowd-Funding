@@ -3,10 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from .models import Category, Project, ProjectImage, Review, Donate
 from .forms import ProjectForm, ProjectImagesForm, ReviewForm, DonateForm
-from django.db.models import Sum
+from django.db.models import Sum, Avg
 
 class CategoryList(ListView):
     model = Category
@@ -130,3 +130,30 @@ def donate_project(request, project_slug):
         return render(request,'campaign/donate_project.html', context=context )
     # except:
     #     return render(request, "notfound.html",{'msg':"project Not Found"})
+
+
+def homepage(request):
+
+    if (request.GET.get('search')):
+        search_query = request.GET.get('search')
+        projects = Project.objects.filter(title__contains = search_query )
+        projects_by_tag = Project.objects.filter(tags__name = search_query)
+        
+        context = {'projects':projects, 'projects_by_tag':projects_by_tag}
+        return render(request, "campaign/search_page.html", context=context)
+    else:
+        latest_projects = Project.objects.order_by('-start_date')[:5]
+        featured_projects = Project.objects.filter(feature = True).order_by('start_date').reverse()[:5]
+
+        most_reviewed = Review.objects.order_by("-rate")[:5]
+        most_reviewed_projects = []
+        for review in most_reviewed:
+            if(Project.objects.filter(id = review.id)):
+                most_reviewed_projects.append(Project.objects.filter(id = review.id))
+                print(Project.objects.filter(id = review.id))
+        context={'latest_projects':latest_projects ,
+                'featured_projects':featured_projects,
+                'most_reviewed_projects':most_reviewed_projects  }
+        return render(request,"campaign/homepage.html",context)
+
+

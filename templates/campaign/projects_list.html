@@ -1,7 +1,9 @@
-{% extends "base.html" %} {% block body %}
-<ul>
+{% extends "base.html" %} 
+
+{% block content %}
+<ul class='my-5'>
     {% for project in projects %}
     <li><a href="{% url 'project_details' project.slug %}">{{project.title}}</a></li>
     {% endfor %}
 </ul>
-{% endblock body %}
+{% endblock content %}

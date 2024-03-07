@@ -1,6 +1,12 @@
-{% extends "base.html" %} {% block body %}
-{{category.name}}
- {% for project in projects %}
-{{project.title}} 
-{% endfor %}
-{% endblock body %}
+{% extends "base.html" %}
+
+
+{% block content %}
+        <div class='row my-5'>
+            <h2 class='text-center'> {{category.name}} </h2>
+            {% for project in projects %}
+                <p class='text-center'> {{project.title}} </p>
+                <hr>
+            {% endfor %}
+        </div>
+{% endblock content %}
