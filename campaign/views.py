@@ -145,15 +145,15 @@ def homepage(request):
         latest_projects = Project.objects.order_by('-start_date')[:5]
         featured_projects = Project.objects.filter(feature = True).order_by('start_date').reverse()[:5]
 
-        most_reviewed = Review.objects.order_by("-rate")[:5]
+        most_reviewed = Review.objects.values('project_id').annotate(avg_rate=Avg('rate')).order_by("avg_rate")[:5]
+        print(most_reviewed)
         most_reviewed_projects = []
         for review in most_reviewed:
-            if(Project.objects.filter(id = review.id)):
-                most_reviewed_projects.append(Project.objects.filter(id = review.id))
-                print(Project.objects.filter(id = review.id))
+            if(Project.objects.filter(id = review['project_id'])):
+                most_reviewed_projects.append(Project.objects.filter(id = review['project_id']))
         context={'latest_projects':latest_projects ,
                 'featured_projects':featured_projects,
-                'most_reviewed_projects':most_reviewed_projects  }
+                'most_reviewed_projects':most_reviewed_projects }
         return render(request,"campaign/homepage.html",context)
 
 
