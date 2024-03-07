@@ -3,6 +3,8 @@ from .views import *
 
 urlpatterns = [
     path("", projects_list, name='all_projects'),
+    path("home/", homepage),
+    path("search/", homepage, name='search_project'),
     path("list-category", CategoryList.as_view(), name='category_list'),
     path("category/<slug:category_name>/", show_by_category, name="category"),
     path("project/<slug:project_slug>", project_detail, name="project_details"),
