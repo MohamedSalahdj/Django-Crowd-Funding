@@ -1,18 +1,17 @@
-
-{% extends 'base_generic.html' %}
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 
-
-
 {% block content %}
-<div class="container">
-
-<h1>sign up</h1>
-<form method="post" enctype="multipart/form-data" novalidate>
-    {% csrf_token %}
-    {{ form.as_p }}
-    {{ form2.as_p }}
-  <button type="submit" class="btn btn-primary"> Register </button>
-</form>
-</div>
+<div class="container my-5">
+  <div class='row col-lg-7 col-md-10 mx-auto border rounded p-3'>
+      <h1 class='text-center'>Sign up</h1>
+      <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          {% bootstrap_form form2 %}
+          <button type="submit" class="d-block w-50 btn btn-success mx-auto"> Register </button>
+      </form>
+    </div>
+  </div>
 {% endblock %}

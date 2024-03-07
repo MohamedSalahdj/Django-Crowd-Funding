@@ -42,12 +42,12 @@ class SignUpForm2(forms.ModelForm):
     )
     image = forms.ImageField(label="Profile Picture")
 
-    birth_date = forms.DateField(required=False)
-    facebook_profile = forms.URLField(required=False)
-    country = forms.CharField(max_length=2)
+    # birth_date = forms.DateField(required=False)
+    # facebook_profile = forms.URLField(required=False)
+    # country = forms.CharField(max_length=2)
     class Meta:
         model = Profile
-        fields = ['phone', 'image','birth_date','facebook_profile','country']
+        fields = ['phone', 'image']
 
 
 class UserForm(forms.ModelForm):

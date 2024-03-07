@@ -44,7 +44,7 @@ class Project(models.Model):
     end_date = models.DateField()
     tags = TaggableManager()
     feature = models.BooleanField(default=False)
-    slug = models.SlugField(null=True)
+    slug = models.SlugField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
