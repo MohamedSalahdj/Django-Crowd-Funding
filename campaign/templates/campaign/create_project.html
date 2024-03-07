@@ -1,10 +1,23 @@
-<h1>Create Project</h1>
-
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %}
+<p></p>
+{% block content %}
+<div class="container my-5">
+  <div class="row col-lg-7 col-md-10 mx-auto border rounded p-3">
+    <h1 class="text-center">Create Project</h1>
     <form method="post" enctype="multipart/form-data" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
-        {{ projectimagesform.as_p }}
-        {{ projectimagesform.as_p }}
-        {{ projectimagesform.as_p }}
-        <button type="submit">ADD Project</button>
+      {% csrf_token %} {% bootstrap_form form %}
+      <p></p>
+      {# Assuming `projectimagesform` is another form #}
+      <p></p>
+      {% bootstrap_form projectimagesform %}
+      <p></p>
+      {% bootstrap_form projectimagesform %}
+      <p></p>
+      {% bootstrap_form projectimagesform %}
+      <button type="submit" class="d-block w-50 btn btn-success mx-auto">
+        ADD Project
+      </button>
     </form>
+  </div>
+</div>
+{% endblock %}

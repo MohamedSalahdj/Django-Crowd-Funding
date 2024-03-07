@@ -1,38 +1,39 @@
-{% extends "base_generic.html" %}
-{% load django_bootstrap5 %}
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %} {%
+extends "base_generic.html" %} {% load django_bootstrap5 %} {% block content %}
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %} {% if next %} {% if user.is_authenticated %}
+<p>
+  Your account doesn't have access to this page. To proceed, please login with
+  an account that has access.
+</p>
+{% else %}
+<p>Please login to see this page.</p>
+{% endif %} {% endif %}
+<div class="container my-5">
+  <div class="row col-8 col-lg-4 col-md-6 col-sm-8 mx-auto border rounded p-3">
+    <h1 class="text-center">Login</h1>
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <label for="">{{ form.username.label_tag }}</label>
+      <div class="text-center">
+        <p>{{ form.username }}</p>
+      </div>
 
-{% block content %}
-
-  {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
-
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-    {% else %}
-      <p>Please login to see this page.</p>
-    {% endif %}
-  {% endif %}
- 
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <table>
-      <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="login">
-    <input type="hidden" name="next" value="{{ next }}">
-  </form>
-
-  {# Assumes you set up the password_reset view in your URLconf #}
-  <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
+      <label for="" class="mt-3">{{ form.password.label_tag }}</label>
+      <div class="text-center">
+        <p>{{ form.password }}</p>
+      </div>
+      <!-- <input type="submit" value="login"> -->
+      <button type="submit" class="d-block w-50 btn btn-success mx-auto mt-3">
+        Login
+      </button>
+      {# Assumes you set up the password_reset view in your URLconf #}
+      <p class="mt-3 text-center">
+        <a href="{% url 'password_reset' %}">Forget password?</a>
+      </p>
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+  </div>
+</div>
 {% endblock %}
