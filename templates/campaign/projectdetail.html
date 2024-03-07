@@ -1,39 +1,530 @@
-{% extends "base.html" %} {% block content %}
-    {{project.title}}
-    {{project.target}}
-    <hr>
-    <form method="post" enctype="multipart/form-data" novalidate>
-        {% csrf_token %}
-        
-        <div class="star-rating">
-            <span> rate</span>
-            <input type="radio" id="star-1" name="rate" value="1">
-            <label for="star-1"></label>
-            <input type="radio" id="star-2" name="rate" value="2">
-            <label for="star-2"></label>
-            <input type="radio" id="star-3" name="rate" value="3">
-            <label for="star-3"></label>
-            <input type="radio" id="star-4" name="rate" value="4">
-            <label for="star-4"></label>
-            <input type="radio" id="star-5" name="rate" value="5">
-            <label for="star-5"></label>
-        </div><br>
-        {{ review_form.rate.errors }}
-    
-        <div>
-            <label for="{{ review_form.comment.id_for_label }}">Comment:</label>
-            {{ review_form.comment }}
-            {{ review_form.comment.errors }}
+{% extends "base.html" %} {% block content %} {%load static%}
+<head>
+  <style>
+    /* Add some styling to the stars */
+    .star-rating input {
+      display: none;
+    }
+
+    .star-rating label {
+      cursor: pointer;
+      font-size: 30px;
+      color: #ccc;
+    }
+
+    .star-rating input:checked + label {
+      color: gold;
+    }
+  </style>
+</head>
+<section class="news-section section-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7 col-12">
+        <div class="news-block">
+          <div class="news-block-top">
+            <!-- src="{% static 'images/news/medium-shot-volunteers-with-clothing-donations.jpg' %}" -->
+            <img
+              src="{{project.image.url}}"
+              class="news-image img-fluid"
+              alt=""
+            />
+
+            <div class="news-category-block">
+              <a href="#" class="category-block-link">{{project.catergory}}</a>
+            </div>
+          </div>
+
+          <div class="news-block-info ms-1">
+            <div class="d-flex mt-2">
+              <div class="news-block-date">
+                <p>
+                  <i class="bi-calendar4 custom-icon me-1"></i>
+                  {{project.start_date}}
+                </p>
+              </div>
+
+              <div class="news-block-date ms-5">
+                <p>
+                  <i class="bi-calendar4 custom-icon me-1"></i>
+                  {{project.end_date}}
+                </p>
+              </div>
+
+              <div class="news-block-author mx-5">
+                <p>
+                  <i class="bi-person custom-icon me-1"></i>
+                  {{project.owner}}
+                </p>
+              </div>
+
+              <div class="news-block-comment">
+                <p>
+                  <i class="bi-chat-left custom-icon me-1"></i>
+                  48 Comments
+                </p>
+              </div>
+            </div>
+
+            <div class="news-block-title mb-2">
+              <h4>{{project.title}}</h4>
+            </div>
+
+            <div class="news-block-body">
+              <p><strong>Project Target: </strong>{{project.target}}</p>
+
+              <p><strong>Total Donations: </strong>{{total_donations}}</p>
+              <p><strong>Description: </strong>{{project.details}}</p>
+            </div>
+
+            <div
+              class="social-share border-top mt-5 py-4 d-flex flex-wrap align-items-center"
+            >
+              <div class="tags-block me-auto">
+                <a href="#" class="tags-block-link"> Donation </a>
+
+                <a href="#" class="tags-block-link"> Clothing </a>
+
+                <a href="#" class="tags-block-link"> Food </a>
+              </div>
+
+              <div class="d-flex">
+                <a href="#" class="social-icon-link bi-facebook"></a>
+
+                <a href="#" class="social-icon-link bi-twitter"></a>
+
+                <a href="#" class="social-icon-link bi-printer"></a>
+
+                <a href="#" class="social-icon-link bi-envelope"></a>
+              </div>
+            </div>
+
+            {% for review in all_reviews %}
+            <div class="author-comment d-flex mt-3 mb-4">
+              <img
+                src="{% static 'images/avatar/studio-portrait-emotional-happy-funny.jpg' %}"
+                class="img-fluid avatar-image"
+                alt=""
+              />
+              <!-- <p>{{review.user}} |  {{review.comment}} | </p>  -->
+              <div class="author-comment-info ms-3">
+                <h6 class="mb-1">{{review.user}}</h6>
+
+                <p class="mb-0">{{review.comment}}</p>
+
+                <div class="d-flex mt-2">
+                  <a href="#" class="author-comment-link me-3">Like</a>
+
+                  <a href="#" class="author-comment-link">Reply</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+            <!-- <div class="author-comment d-flex ms-5 ps-3">
+              <img
+                src="{% static 'images/avatar/pretty-blonde-woman-wearing-white-t-shirt.jpg' %}"
+                class="img-fluid avatar-image"
+                alt=""
+              />
+
+              <div class="author-comment-info ms-3">
+                <h6 class="mb-1">Daisy</h6>
+
+                <p class="mb-0">
+                  Sed leo nisl, posuere at molestie ac, suscipit auctor mauris.
+                  Etiam quis metus elementum, tempor risus vel, condimentum orci
+                </p>
+
+                <div class="d-flex mt-2">
+                  <a href="#" class="author-comment-link me-3">Like</a>
+
+                  <a href="#" class="author-comment-link">Reply</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="author-comment d-flex mt-3 mb-4">
+              <img
+                src="{% static 'images/avatar/portrait-young-redhead-bearded-male.jpg' %}"
+                class="img-fluid avatar-image"
+                alt=""
+              />
+
+              <div class="author-comment-info ms-3">
+                <h6 class="mb-1">Wilson</h6>
+
+                <p class="mb-0">
+                  Lorem Ipsum dolor sit amet, consectetur adipsicing kengan omeg
+                  kohm tokito Professional charity theme based on Bootstrap
+                </p>
+
+                <div class="d-flex mt-2">
+                  <a href="#" class="author-comment-link me-3">Like</a>
+
+                  <a href="#" class="author-comment-link">Reply</a>
+                </div>
+              </div>
+            </div> -->
+
+            <form
+              method="post"
+              class="custom-form comment-form mt-5"
+              role="form"
+              enctype="multipart/form-data"
+              novalidate
+            >
+              {% csrf_token %}
+
+              <div class="d-flex justify-content-between">
+                <div>
+                  <h6 class="mb-3" for="{{ review_form.comment.id_for_label }}">
+                    Write a comment
+                  </h6>
+                  <p>{{ review_form.comment }}</p>
+                  {{ review_form.comment.errors }}
+                </div>
+
+                <div class="star-rating" onclick="handleRating(event)">
+                  <h6 class="mb-2">Rate</h6>
+                  <input type="radio" id="star-1" name="rate" value="1" />
+                  <label for="star-1">★</label>
+                  <input type="radio" id="star-2" name="rate" value="2" />
+                  <label for="star-2">★</label>
+                  <input type="radio" id="star-3" name="rate" value="3" />
+                  <label for="star-3">★</label>
+                  <input type="radio" id="star-4" name="rate" value="4" />
+                  <label for="star-4">★</label>
+                  <input type="radio" id="star-5" name="rate" value="5" />
+                  <label for="star-5">★</label>
+                </div>
+                <br />
+                {{ review_form.rate.errors }}
+              </div>
+              <div id="selected-rating"></div>
+
+              <div class="col-lg-3 col-md-4 col-6 ms-auto">
+                <button type="submit" class="form-control">Comment</button>
+              </div>
+            </form>
+
+            <!-- <form
+              class="custom-form comment-form mt-4"
+              action="#"
+              method="post"
+              role="form"
+            >
+              <h6 class="mb-3">Write a comment</h6>
+
+              <textarea
+                name="comment-message"
+                rows="4"
+                class="form-control"
+                id="comment-message"
+                placeholder="Your comment here"
+              ></textarea>
+
+              <div class="col-lg-3 col-md-4 col-6 ms-auto">
+                <button type="submit" class="form-control">Comment</button>
+              </div>
+            </form> -->
+          </div>
         </div>
-    
-        <button type="submit">Submit Review</button>
-    </form>
-    <h1>
-        Total Donations: {{total_donations}}
-    </h1>
-    <hr>
-    <h2> ALL Reviews</h2>
-    {% for review in all_reviews %}
-        <p>{{review.user}} |  {{review.comment}} | </p> 
-    {% endfor %}
+      </div>
+
+      <div class="col-lg-4 col-12 mx-auto mt-4 mt-lg-0">
+        <form
+          class="custom-form search-form"
+          action="#"
+          method="post"
+          role="form"
+        >
+          <input
+            class="form-control"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+
+          <button type="submit" class="form-control">
+            <i class="bi-search"></i>
+          </button>
+        </form>
+
+        <h5 class="mt-5 mb-3">Recent Projects</h5>
+
+        <div class="news-block news-block-two-col d-flex mt-4">
+          <div class="news-block-two-col-image-wrap">
+            <a href="news-detail.html">
+              <img
+                src="{% static 'images/news/africa-humanitarian-aid-doctor.jpg' %}"
+                class="news-image img-fluid"
+                alt=""
+              />
+            </a>
+          </div>
+
+          <div class="news-block-two-col-info">
+            <div class="news-block-title mb-2">
+              <h6>
+                <a href="news-detail.html" class="news-block-title-link"
+                  >Food donation area</a
+                >
+              </h6>
+            </div>
+
+            <div class="news-block-date">
+              <p>
+                <i class="bi-calendar4 custom-icon me-1"></i>
+                October 16, 2036
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="news-block news-block-two-col d-flex mt-4">
+          <div class="news-block-two-col-image-wrap">
+            <a href="news-detail.html">
+              <img
+                src="{% static 'images/news/close-up-happy-people-working-together.jpg' %}"
+                class="news-image img-fluid"
+                alt=""
+              />
+            </a>
+          </div>
+
+          <div class="news-block-two-col-info">
+            <div class="news-block-title mb-2">
+              <h6>
+                <a href="news-detail.html" class="news-block-title-link"
+                  >Volunteering Clean</a
+                >
+              </h6>
+            </div>
+
+            <div class="news-block-date">
+              <p>
+                <i class="bi-calendar4 custom-icon me-1"></i>
+                October 20, 2036
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="category-block d-flex flex-column">
+          <h5 class="mb-3">Categories</h5>
+
+          <a href="#" class="category-block-link">
+            Drinking water
+            <span class="badge">20</span>
+          </a>
+
+          <a href="#" class="category-block-link">
+            Food Donation
+            <span class="badge">30</span>
+          </a>
+
+          <a href="#" class="category-block-link">
+            Children Education
+            <span class="badge">10</span>
+          </a>
+
+          <a href="#" class="category-block-link">
+            Poverty Development
+            <span class="badge">15</span>
+          </a>
+
+          <a href="#" class="category-block-link">
+            Clothing Donation
+            <span class="badge">20</span>
+          </a>
+        </div>
+
+        <div class="tags-block">
+          <h5 class="mb-3">Tags</h5>
+
+          <a href="#" class="tags-block-link"> Donation </a>
+
+          <a href="#" class="tags-block-link"> Clothing </a>
+
+          <a href="#" class="tags-block-link"> Food </a>
+
+          <a href="#" class="tags-block-link"> Children </a>
+
+          <a href="#" class="tags-block-link"> Education </a>
+
+          <a href="#" class="tags-block-link"> Poverty </a>
+
+          <a href="#" class="tags-block-link"> Clean Water </a>
+        </div>
+
+        <form
+          class="custom-form subscribe-form"
+          action="#"
+          method="post"
+          role="form"
+        >
+          <h5 class="mb-4">Newsletter Form</h5>
+
+          <input
+            type="email"
+            name="subscribe-email"
+            id="subscribe-email"
+            pattern="[^ @]*@[^ @]*"
+            class="form-control"
+            placeholder="Email Address"
+            required
+          />
+
+          <div class="col-lg-12 col-12">
+            <button type="submit" class="form-control">Subscribe</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="news-section section-padding section-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-12 mb-4">
+        <h2>Related Projects</h2>
+      </div>
+
+      <div class="col-lg-6 col-12">
+        <div class="news-block">
+          <div class="news-block-top">
+            <a href="news-detail.html">
+              <img
+                src="{% static 'images/news/medium-shot-volunteers-with-clothing-donations.jpg' %}"
+                class="news-image img-fluid"
+                alt=""
+              />
+            </a>
+
+            <div class="news-category-block">
+              <a href="#" class="category-block-link"> Lifestyle, </a>
+
+              <a href="#" class="category-block-link"> Clothing Donation </a>
+            </div>
+          </div>
+
+          <div class="news-block-info">
+            <div class="d-flex mt-2">
+              <div class="news-block-date">
+                <p>
+                  <i class="bi-calendar4 custom-icon me-1"></i>
+                  October 16, 2036
+                </p>
+              </div>
+
+              <div class="news-block-author mx-5">
+                <p>
+                  <i class="bi-person custom-icon me-1"></i>
+                  By Admin
+                </p>
+              </div>
+
+              <div class="news-block-comment">
+                <p>
+                  <i class="bi-chat-left custom-icon me-1"></i>
+                  24 Comments
+                </p>
+              </div>
+            </div>
+
+            <div class="news-block-title mb-2">
+              <h4>
+                <a href="news-detail.html" class="news-block-title-link"
+                  >Clothing donation to urban area</a
+                >
+              </h4>
+            </div>
+
+            <div class="news-block-body">
+              <p>
+                Lorem Ipsum dolor sit amet, consectetur adipsicing kengan omeg
+                kohm tokito Professional charity theme based on Bootstrap
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-12">
+        <div class="news-block">
+          <div class="news-block-top">
+            <a href="news-detail.html">
+              <img
+                src="{% static 'images/news/medium-shot-people-collecting-foodstuff.jpg' %}"
+                class="news-image img-fluid"
+                alt=""
+              />
+            </a>
+
+            <div class="news-category-block">
+              <a href="#" class="category-block-link"> Food, </a>
+
+              <a href="#" class="category-block-link"> Donation, </a>
+
+              <a href="#" class="category-block-link"> Caring </a>
+            </div>
+          </div>
+
+          <div class="news-block-info">
+            <div class="d-flex mt-2">
+              <div class="news-block-date">
+                <p>
+                  <i class="bi-calendar4 custom-icon me-1"></i>
+                  October 20, 2036
+                </p>
+              </div>
+
+              <div class="news-block-author mx-5">
+                <p>
+                  <i class="bi-person custom-icon me-1"></i>
+                  By Admin
+                </p>
+              </div>
+
+              <div class="news-block-comment">
+                <p>
+                  <i class="bi-chat-left custom-icon me-1"></i>
+                  36 Comments
+                </p>
+              </div>
+            </div>
+
+            <div class="news-block-title mb-2">
+              <h4>
+                <a href="news-detail.html" class="news-block-title-link"
+                  >Food donation area</a
+                >
+              </h4>
+            </div>
+
+            <div class="news-block-body">
+              <p>
+                Sed leo nisl, posuere at molestie ac, suscipit auctor mauris.
+                Etiam quis metus elementum, tempor risus vel, condimentum orci
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  function handleRating(event) {
+    const ratingElement = event.target;
+    if (ratingElement.tagName === "LABEL") {
+      const ratingValue = ratingElement.previousElementSibling.value;
+      document.getElementById(
+        "selected-rating"
+      ).innerText = `Selected Rating: ${ratingValue}`;
+    }
+  }
+</script>
 {% endblock content %}
