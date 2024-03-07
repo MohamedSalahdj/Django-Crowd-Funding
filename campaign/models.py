@@ -68,9 +68,13 @@ class Project(models.Model):
     @classmethod
     def  delete_project(cls,id):
         return cls.objects.filter(id=id).delete()
-    
+
     def GetImageURl(self):
         return self.image.url
+    
+    def similar_projects(self):
+        similar_five_projects = Project.objects.filter(tags__in=self.tags.all()).exclude(id=self.id).distinct()
+        return similar_five_projects[:5]  
 
 class ProjectImage(models.Model):
     image = models.ImageField(upload_to='projects/images',blank=True,null=True)

@@ -94,7 +94,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link click-scroll" href="#top">Home</a>
+              <a class="nav-link click-scroll" href="{% url 'home_page' %}">Home</a>
             </li>
 
             <li class="nav-item">
@@ -102,11 +102,11 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link click-scroll" href="#section_3">Causes</a>
+              <a class="nav-link click-scroll" href="{% url 'all_projects' %}">Projects</a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link click-scroll" href="#section_4">Volunteer</a>
+              <a class="nav-link click-scroll" href="{% url 'category_list' %}">Categories</a>
             </li>
 
             <li class="nav-item dropdown">
@@ -135,9 +135,9 @@
       </div>
     </nav>
 
-    {%block content%}
+    {% block content %}
     <h2 style="text-align: center">Home Page</h2>
-    {%endblock%}
+    {% endblock content %}
 
     <footer class="site-footer">
       <div class="container">
