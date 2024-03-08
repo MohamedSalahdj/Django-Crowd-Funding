@@ -112,15 +112,22 @@
               {% for review in all_reviews %}
               <div class="author-comment d-flex mt-3 mb-4">
                 <img
-                  src="{% static 'images/avatar/studio-portrait-emotional-happy-funny.jpg' %}"
+                  src="{{review.user.user_profile.image.url}}"
                   class="img-fluid avatar-image"
                   alt=""
                 />
                 <!-- <p>{{review.user}} |  {{review.comment}} | </p>  -->
                 <div class="author-comment-info ms-3">
-                  <h6 class="mb-1">{{review.user}}</h6>
-
-                  <p class="mb-0">{{review.comment}}</p>
+                  <h6 class="mb-1 d-inline-block">{{review.user}}</h6>
+                  <span class='fs-7'>- {{review.created_at}}</span>
+                  <p class="mb-0">{{review.comment}}  </p>
+                  <div class="review-rating"> 
+                    {% if review.rate > 0 %} <i class="bi bi-star-fill text-warning"></i> {%else%} <i class="bi bi-star"></i> {%endif%}
+                    {% if review.rate > 1 %} <i class="bi bi-star-fill text-warning"></i> {%else%} <i class="bi bi-star"></i> {%endif%}
+                    {% if review.rate > 2 %} <i class="bi bi-star-fill text-warning"></i> {%else%} <i class="bi bi-star"></i> {%endif%}
+                    {% if review.rate > 3 %} <i class="bi bi-star-fill text-warning"></i> {%else%} <i class="bi bi-star"></i> {%endif%}
+                    {% if review.rate > 4 %} <i class="bi bi-star-fill text-warning"></i> {%else%} <i class="bi bi-star"></i> {%endif%}
+                  </div>
 
                   <div class="d-flex mt-2">
                     <a href="#" class="author-comment-link me-3">Like</a>

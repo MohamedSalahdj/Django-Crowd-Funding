@@ -6,14 +6,21 @@
     <div class='container my-5'>
         <div class='row justify-content-evenly'>
         {% for donate in user_donations  %}
-            <div class="card p-0 mt-3" style="width: 18rem;">
-                <div class="card-header text-center w-100 m-0">
-                    {{donate.project}}
-                </div>
-                <ul class="list-group list-group-flush">
-                <li class="list-group-item">Donation Amount: {{donate.donation_amount}} </li>
-                <li class="list-group-item">{{donate.donated_time}}</li>                </ul>
+        <div class="card mt-3" style="width: 18rem;">
+            <img src="{{donate.project.image.url}}" class="card-img-top d-block mx-auto pt-2 " alt="..." style='width:85%;height:223px'>
+            <div class="card-body">
+              <h5 class="card-title text-center">{{donate.project}}</h5>
+              <p class="card-text">{{donate.project.details}}</p>
             </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Target: <span class='text-secondary'>{{donate.project.target}}</span></li>
+              <li class="list-group-item">tbr3k: <span class='text-secondary'>{{donate.donation_amount}}</span></li>
+            </ul>
+            <div class="d-flex card-body justify-content-around">
+              <a href="{% url 'project_details' donate.project.slug  %}" class="card-link text-primary">See more</a>
+              <a href="{% url 'donate_project' donate.project.slug %}" class="card-link text-success">Add donate </a>
+            </div>
+          </div>
         {% endfor %}
         </div>
     </div>

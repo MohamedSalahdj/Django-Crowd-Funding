@@ -79,7 +79,7 @@ class Project(models.Model):
     
     def avg_rate(self):
         avg = self.project_review.aggregate(project_avg=Avg('rate'))
-        return avg['project_avg'] if avg['project_avg'] else 0 
+        return round(avg['project_avg'], 2) if avg['project_avg'] else 0 
 
 class ProjectImage(models.Model):
     image = models.ImageField(upload_to='projects/images',blank=True,null=True)
