@@ -42,8 +42,8 @@ INSTALLED_APPS = [
 
     # Libraries
     "django_bootstrap5",
-    'crispy_forms',
-    'crispy_bootstrap5',
+    "taggit",
+    'social_django',
 
     # Ourapps
     'campaign.apps.CampaignConfig',
@@ -52,7 +52,6 @@ INSTALLED_APPS = [
 
 
 
-CRISPY_TEMPLATE_PACK = 'uni_form'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,6 +76,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+               
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -142,9 +145,11 @@ LOGOUT_REDIRECT_URL = 'login'
 
 AUTHENTICATION_BACKENDS = [
     'account.backends.EmailBackend',
+    'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
   
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

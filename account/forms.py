@@ -13,7 +13,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name', 'email', 'username', 'password1', 'password2']
+        fields = ['username','first_name', 'last_name', 'email', 'password1', 'password2']
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -46,7 +46,7 @@ class SignUpForm2(forms.ModelForm):
 
     birth_date = forms.DateField(required=False)
     facebook_profile = forms.URLField(required=False)
-    country = forms.CharField(max_length=2)
+    country = forms.CharField(max_length=10)
     class Meta:
         model = Profile
         fields = ['phone', 'image','birth_date','facebook_profile','country']

@@ -1,0 +1,11 @@
+
+<h1>Create Project</h1>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ projectimagesform.as_p }}
+        {{ projectimagesform.as_p }}
+        {{ projectimagesform.as_p }}
+        <button type="submit">ADD Project</button>
+    </form>

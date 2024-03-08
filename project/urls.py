@@ -20,9 +20,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path ('',include('account.urls')),
-    path('accounts/',include('django.contrib.auth.urls')),
+    path("projects/", include('campaign.urls')),
+    path ('', include('account.urls')),
 ]
 
 
