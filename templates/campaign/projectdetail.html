@@ -33,8 +33,13 @@
                 alt=""
               />
 
-              <div class="news-category-block">
+              <div class="news-category-block d-flex justify-content-around">
                 <a href="#" class="category-block-link">{{project.catergory}}</a>
+                <a
+                href="{% url 'donate_project' project.slug %}"
+                class="category-block-link "
+                >Donate now</a
+              >
               </div>
             </div>
 
@@ -62,10 +67,11 @@
                 </div>
 
                 <div class="news-block-comment">
-                  <p>
+                 <p>
                     <i class="bi-chat-left custom-icon me-1"></i>
-                    48 Comments
+                    {{all_reviews|length}} Comments
                   </p>
+                 
                 </div>
               </div>
 
@@ -289,31 +295,13 @@
 
           <div class="category-block d-flex flex-column">
             <h5 class="mb-3">Categories</h5>
+            {% for category in five_categories %}
+              <a href="#" class="category-block-link">
+                {{category}}
+                {% comment %} <span class="badge">20</span> {% endcomment %}
+              </a>
+            {% endfor %}
 
-            <a href="#" class="category-block-link">
-              Drinking water
-              <span class="badge">20</span>
-            </a>
-
-            <a href="#" class="category-block-link">
-              Food Donation
-              <span class="badge">30</span>
-            </a>
-
-            <a href="#" class="category-block-link">
-              Children Education
-              <span class="badge">10</span>
-            </a>
-
-            <a href="#" class="category-block-link">
-              Poverty Development
-              <span class="badge">15</span>
-            </a>
-
-            <a href="#" class="category-block-link">
-              Clothing Donation
-              <span class="badge">20</span>
-            </a>
           </div>
 
           <div class="tags-block">

@@ -3,12 +3,19 @@
 {% block content %}
 <h1 class='text-center mt-3'>Your Donations</h1>
 
-    <div class='container'>
-       <ul>
+    <div class='container my-5'>
+        <div class='row justify-content-evenly'>
         {% for donate in user_donations  %}
-            <li>{{donate.donation_amount}} | {{donate.donated_time}} | {{donate.project}}</li>
+            <div class="card p-0 mt-3" style="width: 18rem;">
+                <div class="card-header text-center w-100 m-0">
+                    {{donate.project}}
+                </div>
+                <ul class="list-group list-group-flush">
+                <li class="list-group-item">Donation Amount: {{donate.donation_amount}} </li>
+                <li class="list-group-item">{{donate.donated_time}}</li>                </ul>
+            </div>
         {% endfor %}
-       </ul>
+        </div>
     </div>
 
 

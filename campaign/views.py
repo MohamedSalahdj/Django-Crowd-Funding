@@ -33,6 +33,7 @@ def project_detail(request, project_slug):
         project = Project.objects.get(slug=project_slug)
         similar_five_projects = Project.similar_projects(project)
         all_reviews = Review.objects.filter(project=project)
+        categories = Category.objects.all()[:5] 
         if request.method == 'POST':
             review_form = ReviewForm(request.POST)
             if review_form.is_valid():
@@ -54,7 +55,8 @@ def project_detail(request, project_slug):
                 'review_form': review_form, 
                 'all_reviews': all_reviews, 
                 'total_donations': total_donations,
-                'similar_projects': similar_five_projects 
+                'similar_projects': similar_five_projects,
+                'five_categories': categories
         }
         return render(request, "campaign/projectdetail.html", context)
     

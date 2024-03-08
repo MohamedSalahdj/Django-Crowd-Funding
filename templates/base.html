@@ -40,7 +40,7 @@
 
           <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
             <ul class="social-icon">
-              <li class="social-icon-item">
+              {% comment %} <li class="social-icon-item">
                 <a href="#" class="social-icon-link bi-twitter"></a>
               </li>
 
@@ -54,10 +54,10 @@
 
               <li class="social-icon-item">
                 <a href="#" class="social-icon-link bi-youtube"></a>
-              </li>
+              </li> {% endcomment %}
 
-              <li class="social-icon-item">
-                <a href="#" class="social-icon-link bi-whatsapp"></a>
+              <li class="">
+                <a href="{% url 'user_profile' %}" class="bi bi-person-circle fs-4 "></a>
               </li>
             </ul>
           </div>

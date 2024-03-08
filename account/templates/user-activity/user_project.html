@@ -8,7 +8,7 @@
     <div class="container">
       <div class="row">
         {% for project in projects %}
-        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0 mt-5">
           <div class="custom-block-wrap">
             <a href="{% url 'project_details' project.slug %}"
               ><img
@@ -57,8 +57,8 @@
                 >Donate now</a
               > -->
               <div class="d-flex justify-content-center mb-2">
-                <button class="btn btn-success col-5 me-3">Update</button>
-                <button class="btn btn-danger col-5">Delete</button>
+                <a href="{% url 'update_project' project.slug %}" class="btn btn-success col-5 me-3">Update</a>
+                <a href="{% url 'deletproject' project.slug %}" class="btn btn-danger col-5">Delete</a>
               </div>
             </div>
           </div>
