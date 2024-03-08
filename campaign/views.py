@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import Category, Project, ProjectImage, Review, Donate
 from .forms import ProjectForm, ProjectImagesForm, ReviewForm, DonateForm
+from reports.forms import  ReportProjectForm
 from django.db.models import Sum, Avg
 
 class CategoryList(ListView):
@@ -36,14 +37,24 @@ def project_detail(request, project_slug):
         categories = Category.objects.all()[:5] 
         if request.method == 'POST':
             review_form = ReviewForm(request.POST)
+            report_form = ReportProjectForm(request.POST)
             if review_form.is_valid():
                 review_form = review_form.save(commit=False)
                 review_form.project = project
                 review_form.user = request.user
                 review_form.save()
                 review_form = ReviewForm()
+
+            if report_form.is_valid():
+                report_form = report_form.save(commit=False)
+                report_form.reason = request.POST['reason']
+                report_form.project = project
+                report_form.reporter = request.user
+                report_form.save()
+                report_form = ReportProjectForm()
         else:
             review_form = ReviewForm()
+            report_form = ReportProjectForm()
         
         donations_models = Donate.objects.filter(project=project)
         total_donations = 0
@@ -56,7 +67,8 @@ def project_detail(request, project_slug):
                 'all_reviews': all_reviews, 
                 'total_donations': total_donations,
                 'similar_projects': similar_five_projects,
-                'five_categories': categories
+                'five_categories': categories,
+                'report_form' : report_form
         }
         return render(request, "campaign/projectdetail.html", context)
     
