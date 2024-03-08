@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django.utils.text import slugify
 from django.utils import timezone
+from django.db.models.aggregates import Avg
 
 
 
@@ -48,7 +49,7 @@ class Project(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        super(Project, self).save(*args, **kwargs) 
+        super(Project, self).save(*args, **kwargs)
 
     def  __str__(self):
         return self.title
@@ -75,6 +76,10 @@ class Project(models.Model):
     def similar_projects(self):
         similar_five_projects = Project.objects.filter(tags__in=self.tags.all()).exclude(id=self.id).distinct()
         return similar_five_projects[:5]  
+    
+    def avg_rate(self):
+        avg = self.project_review.aggregate(project_avg=Avg('rate'))
+        return avg['project_avg'] if avg['project_avg'] else 0 
 
 class ProjectImage(models.Model):
     image = models.ImageField(upload_to='projects/images',blank=True,null=True)
