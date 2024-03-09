@@ -3,6 +3,8 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Profile
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row, Column
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=15)
@@ -11,7 +13,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name', 'email', 'username', 'password1', 'password2']
+        fields = ['username','first_name', 'last_name', 'email', 'password1', 'password2']
 
     def clean_username(self):
         username = self.cleaned_data.get('username')

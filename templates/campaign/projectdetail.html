@@ -320,25 +320,24 @@
           </div>
 
           <form
-            class="custom-form subscribe-form"
-            action="#"
             method="post"
-            role="form"
+            enctype="multipart/form-data"
+            novalidate
+            class="custom-form subscribe-form"
           >
-            <h5 class="mb-4">Newsletter Form</h5>
+          {% csrf_token %}
+            <h5 class="mb-4">Report</h5>
 
             <input
-              type="email"
-              name="subscribe-email"
-              id="subscribe-email"
-              pattern="[^ @]*@[^ @]*"
+              type="text"
+              name="reason"
               class="form-control"
-              placeholder="Email Address"
+              placeholder="why?"
               required
             />
 
             <div class="col-lg-12 col-12">
-              <button type="submit" class="form-control">Subscribe</button>
+              <button type="submit" class="form-control">Report</button>
             </div>
           </form>
         </div>
