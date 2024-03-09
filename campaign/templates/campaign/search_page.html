@@ -1,0 +1,130 @@
+{% extends "base.html" %} {% block content %}
+<div class="mt-5 mb-5">
+  <div class="col-lg-12 col-12 text-center mb-4">
+    <h2>Matched Projects By Name</h2>
+  </div>
+  <section class="section-padding" id="section_3">
+    <div class="container">
+      <div class="row">
+        {% for project in projects %}
+        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+          <div class="custom-block-wrap">
+            <a href="{% url 'project_details' project.slug %}"
+              ><img
+                src="{{project.image.url}}"
+                class="custom-block-image img-fluid"
+                alt=""
+                style="height: 350px"
+            /></a>
+
+            <div class="custom-block">
+              <div class="custom-block-body">
+                <h5 class="mb-3">
+                  <a href="{% url 'project_details' project.slug %}"
+                    >{{project.title}}</a
+                  >
+                </h5>
+
+                <p>{{project.details}}</p>
+
+                <div class="progress mt-4">
+                  <div
+                    class="progress-bar w-75"
+                    role="progressbar"
+                    aria-valuenow="75"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+
+                <div class="d-flex align-items-center my-2">
+                  <p class="mb-0">
+                    <strong>Raised:</strong>
+                    {{total_donations}}
+                  </p>
+
+                  <p class="ms-auto mb-0">
+                    <strong>Goal:</strong>
+                    {{project.target}}
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href="{% url 'donate_project' project.slug %}"
+                class="custom-btn btn"
+                >Donate now</a
+              >
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+<div class="mt-5 mb-5">
+  <div class="col-lg-12 col-12 text-center mb-4">
+    <h2>Matched Projects By Tags</h2>
+  </div>
+  <section class="section-padding" id="section_3">
+    <div class="container">
+      <div class="row">
+        {% for project in projects_by_tag %}
+        <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+          <div class="custom-block-wrap">
+            <a href="{% url 'project_details' project.slug %}"
+              ><img
+                src="{{project.image.url}}"
+                class="custom-block-image img-fluid"
+                alt=""
+                style="height: 350px"
+            /></a>
+
+            <div class="custom-block">
+              <div class="custom-block-body">
+                <h5 class="mb-3">
+                  <a href="{% url 'project_details' project.slug %}"
+                    >{{project.title}}</a
+                  >
+                </h5>
+
+                <p>{{project.details}}</p>
+
+                <div class="progress mt-4">
+                  <div
+                    class="progress-bar w-75"
+                    role="progressbar"
+                    aria-valuenow="75"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+
+                <div class="d-flex align-items-center my-2">
+                  <p class="mb-0">
+                    <strong>Raised:</strong>
+                    {{total_donations}}
+                  </p>
+
+                  <p class="ms-auto mb-0">
+                    <strong>Goal:</strong>
+                    {{project.target}}
+                  </p>
+                </div>
+              </div>
+
+              <a
+                href="{% url 'donate_project' project.slug %}"
+                class="custom-btn btn"
+                >Donate now</a
+              >
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock content %}

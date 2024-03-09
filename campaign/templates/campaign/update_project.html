@@ -1,9 +1,18 @@
-
-<h1>update Project</h1>
-
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %}
+<p></p>
+{% block content %}
+<div class="container my-5">
+  <div class="row col-lg-7 col-md-10 mx-auto border rounded p-3">
+    <h1 class="text-center">Update Project</h1>
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {{ project_images_form.as_p }}
-        <button type="submit">update Project</button>
+      {% csrf_token %} {% bootstrap_form form %}
+      <p></p>
+      {{ project_images_form.as_p }}
+
+      <button type="submit" class="d-block w-50 btn btn-success mx-auto">
+        Update Project
+      </button>
     </form>
+  </div>
+</div>
+{% endblock %}

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from django.utils.text import slugify
 from django.utils import timezone
+from django.db.models.aggregates import Avg
 
 
 
@@ -39,16 +40,16 @@ class Project(models.Model):
     image = models.ImageField(upload_to='projects/images')
     catergory = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='projectCatergory')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projectUser')
-    target=models.DecimalField(max_digits=10, decimal_places=2)
-    start_date=models.DateField(auto_now_add=True)
-    end_date=models.DateField()
+    target = models.DecimalField(max_digits=10, decimal_places=2)
+    start_date = models.DateField(auto_now_add=True)
+    end_date = models.DateField()
     tags = TaggableManager()
     feature = models.BooleanField(default=False)
-    slug = models.SlugField(null=True)
+    slug = models.SlugField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        super(Project, self).save(*args, **kwargs) 
+        super(Project, self).save(*args, **kwargs)
 
     def  __str__(self):
         return self.title
@@ -68,9 +69,17 @@ class Project(models.Model):
     @classmethod
     def  delete_project(cls,id):
         return cls.objects.filter(id=id).delete()
-    
+
     def GetImageURl(self):
         return self.image.url
+    
+    def similar_projects(self):
+        similar_five_projects = Project.objects.filter(tags__in=self.tags.all()).exclude(id=self.id).distinct()
+        return similar_five_projects[:5]  
+    
+    def avg_rate(self):
+        avg = self.project_review.aggregate(project_avg=Avg('rate'))
+        return round(avg['project_avg'], 2) if avg['project_avg'] else 0 
 
 class ProjectImage(models.Model):
     image = models.ImageField(upload_to='projects/images',blank=True,null=True)

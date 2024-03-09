@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% block content %}
+<section class="donate-section">
+  <div class="section-overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-12 mx-auto">
+        <form
+          class="custom-form donate-form"
+          action="#"
+          method="get"
+          role="form"
+        >
+          <h3 class="mb-4 text-center">Login</h3>
+
+          <div class="row">
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="loginEmail"
+                name="loginEmail"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="loginPassword" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="loginPassword"
+                name="loginPassword"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+
+            <button type="submit" class="form-control mt-4">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

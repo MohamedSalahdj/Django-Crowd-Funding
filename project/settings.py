@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     # Ourapps
     'campaign.apps.CampaignConfig',
+    'reports.apps.ReportsConfig',
   
 ]
 
