@@ -5,7 +5,17 @@ from django.contrib.auth.models import User
 from .models import Profile
 from campaign.models import Project, ProjectImage, Category, Donate
 from django.contrib.auth.decorators import login_required
-
+import time
+# for email authintications
+from django.contrib import messages
+from django.core.mail import EmailMessage, send_mail
+from project import settings
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth import authenticate, login, logout
+from . tokens import generate_token
 
 
 def signup(request):
@@ -21,12 +31,71 @@ def signup(request):
             profile = form2.save(commit=False)
             profile.user = user
             profile.save()
+            # Email Address Confirmation Email         
+               
+            # Welcome Email
+            subject = "Welcome to Kind Heart Charity Login!!"
+            #message = "Hello " + user.first_name + "!! \n" + "Welcome to Kind Heart Charity !! \nThank you for visiting our website\n. We have also sent you a confirmation email, please confirm your email address. \n\nThanking You\nShovit Nepal"                
+            message = render_to_string('registration/welcome_email_message.html',{                
+                'name': user.first_name,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': generate_token.make_token(user)
+            })
+            email = EmailMessage(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+            )            
+            email.content_subtype = 'html'
+            email.send() 
+            #send_mail(subject, message, from_email, to_list, fail_silently=True)     
+               
+            # Email Address Confirmation Email
+            current_site = get_current_site(request)
+            email_subject = "Confirm your Email @ Kind Heart Charity!!"
+            message2 = render_to_string('registration/email_confirmation.html',{                
+                'name': user.first_name,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': generate_token.make_token(user)
+            })
+            email = EmailMessage(
+                email_subject,
+                message2,
+                settings.DEFAULT_FROM_EMAIL,
+                [user.email],
+            )            
+            email.content_subtype = 'html'
+            email.send() 
+            return redirect('verify_email')
+        
     else:
         form = SignUpForm()
         form2 = SignUpForm2()
     return render(request, 'registration/signup.html', {'form': form, 'form2': form2})
+    
+def verify_email(request):     
+    context=messages.success(request, "Your Account has been created succesfully!!")           
+    return render(request, 'registration/verify_email.html', context)
 
 
+def activate(request,uidb64,token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        myuser = User.objects.get(pk=uid)
+    except (TypeError,ValueError,OverflowError,User.DoesNotExist):
+        myuser = None
+
+    if myuser is not None and generate_token.check_token(myuser,token):
+        myuser.is_active = True
+        # user.profile.signup_confirmation = True
+        myuser.save()
+        login(request,myuser)
+        return redirect('login')
+    else:
+        return render(request,'registration/activation_failed.html')
+    
 @login_required
 def show_profile(request):
     user = Profile.objects.get(user=request.user)

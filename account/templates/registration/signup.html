@@ -1,24 +1,24 @@
-
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% load static %}
 
 {% block content %}
+
 <div class="container my-5">
   <div class='row col-lg-7 col-md-10 mx-auto border rounded p-3'>
-      <h1 class='text-center'>Sign up</h1>
-      <form action="{% url 'login' %}" method="post" enctype="multipart/form-data" novalidate>
-          {% csrf_token %}
-          {% bootstrap_form form %}
-          {% bootstrap_form form2 %}
-          <p class="mt-5 text-center">
-          <button type="submit" class="d-block w-50 btn btn-success mx-auto"> Register </button>
-        </p>
-          <p class="mt-5 text-center">
-          <a href="{% url 'login' %}"> Already Have An Account ?</a>
-          </p>
-      </form>
+    <h1 class='text-center'>Sign up</h1>
+    <form action="{% url 'login' %}" method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {% bootstrap_form form2 %}
+      <p class="mt-5 text-center">
+        <button type="submit" class="d-block w-50 btn btn-success mx-auto"> Register </button>
+      </p>
+      <p class="mt-5 text-center">
+        <a href="{% url 'login' %}"> Already Have An Account ?</a>
+      </p>
+    </form>
 
-    </div>
   </div>
+</div>
 {% endblock %}

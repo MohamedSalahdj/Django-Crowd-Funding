@@ -1,10 +1,13 @@
 from django.urls import path 
-from .views import signup, show_profile, edit_profile, user_projects, user_donations, delete_profile
+from .views import *
 from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('signup/',signup,name='signup'),
-    path('logout/',auth_views.LogoutView.as_view(),name='logout'),
+    path('verify_email/',verify_email,name='verify_email'),
+    path('activate/<uidb64>/<token>', activate, name='activate'),
+    path('logout/',auth_views.LogoutView.as_view(),name='logout'),    
     path('user-profile', show_profile, name='user_profile'),
     path('edit_profile', edit_profile, name='edit_profile'),
     path('delete-profile', delete_profile, name='delete_profile'),
