@@ -7,6 +7,7 @@ from campaign.models import Project, ProjectImage, Category, Donate
 from django.contrib.auth.decorators import login_required
 
 
+
 def signup(request):
     form = SignUpForm()
     form2 = SignUpForm2()
@@ -84,3 +85,5 @@ def delete_profile(request):
     profile.delete()
     user.delete()
     return redirect('/')
+
+
