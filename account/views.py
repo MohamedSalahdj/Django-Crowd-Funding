@@ -29,11 +29,24 @@ def signup(request):
 @login_required
 def show_profile(request):
     user = Profile.objects.get(user=request.user)
-
-    context = {
-        'user':user
-        }
-    return render(request, 'registration/user_profile.html', context)
+    if request.method == 'GET':
+        context = {
+            'user':user
+            }
+        return render(request, 'registration/user_profile.html', context)
+    else:
+        input_pass = request.POST.get('user_password')
+        user_info = User.objects.get(username=request.user)
+        if(user_info.check_password(input_pass)):
+            profile = Profile.objects.get(user=user_info)
+            profile.delete()
+            user_info.delete()
+            return redirect('/')
+        else:
+            context = {"user": user, 
+                        "error_msg": "Password incorrect"}
+            return render(request, 'registration/user_profile.html', context=context)
+            
 
 @login_required
 def edit_profile(request):
@@ -79,8 +92,4 @@ def user_donations(request):
 
 @login_required
 def delete_profile(request):
-    user = User.objects.get(username=request.user)
-    profile = Profile.objects.get(user=user)
-    profile.delete()
-    user.delete()
-    return redirect('/')
+    pass
