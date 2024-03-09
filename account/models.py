@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_profile')
     phone = models.CharField(max_length=12,validators=[RegexValidator(regex="^01[0|1|2|5][0-9]{8}$",message="Phone must be start 010, 011, 012, 015 and all number contains 11 digits")],blank=True)
    
     image = models.ImageField(default="default.png",upload_to="account/images/",null=True ,blank=True)

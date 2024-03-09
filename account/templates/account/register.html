@@ -1,0 +1,109 @@
+{% extends 'base.html' %} {% block content %}
+<section class="donate-section">
+  <div class="section-overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-12 mx-auto">
+        <form
+          class="custom-form donate-form"
+          action="#"
+          method="get"
+          role="form"
+        >
+          <h3 class="mb-4 text-center">Register</h3>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName" class="form-label">First Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="firstName"
+                name="firstName"
+                placeholder="Enter your first name"
+                required
+              />
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="lastName"
+                name="lastName"
+                placeholder="Enter your last name"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label"
+                >Confirm Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="mobilePhone" class="form-label">Mobile Phone</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="mobilePhone"
+                name="mobilePhone"
+                placeholder="Enter your mobile phone"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="profilePicture" class="form-label"
+                >Profile Picture</label
+              >
+              <input
+                type="file"
+                class="form-control"
+                id="profilePicture"
+                name="profilePicture"
+              />
+            </div>
+
+            <button type="submit" class="form-control mt-4">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
