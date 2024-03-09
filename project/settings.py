@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'campaign.apps.CampaignConfig',
     'reports.apps.ReportsConfig',
   
-    
 ]
 
 
