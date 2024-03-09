@@ -32,10 +32,10 @@
                     Edit Profile
                     </a>
                     <a class="list-group-item list-group-item-action"  href="{% url 'password_change' %}" role="tab">
-                    change Password
+                    Change Password
                     </a>
-                    <a class="list-group-item list-group-item-action"   data-toggle="modal" data-target="#exampleModal"  role="tab">
-                        Delete profile
+                    <a class="list-group-item list-group-item-action"   data-toggle="modal" data-target="#exampleModal" href=""  role="tab">
+                        Delete Profile
                     </a>
                 </div>
             </div>
@@ -84,6 +84,15 @@
             </div>
         </div>
     </div>
+    {% if error_msg %}
+        <div class="container">
+            <div class="alert alert-danger" role="alert">
+                {{error_msg}}
+            </div>
+        </div>
+    {% else %}
+        <div></div>
+    {% endif %}
 
 
  <!-- Modal -->
@@ -91,13 +100,13 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete profile confirmation</h5>
+          <h3 class="modal-title font-weight-bold" id="exampleModalLabel">Delete Account</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-            <p>confirm with your account password to continue</p>
+            <p>Enter you current password to confirm cancellation of your account</p>
           <form enctype="multipart/form-data" method="post" >
             {% csrf_token %}
             <div class="form-group">
@@ -114,6 +123,7 @@
       </div>
     </div>
   </div>
+  
 </div>
 
 

@@ -44,7 +44,7 @@ def show_profile(request):
             return redirect('/')
         else:
             context = {"user": user, 
-                        "error_msg": "Password incorrect"}
+                        "error_msg": "Incorrect Password"}
             return render(request, 'registration/user_profile.html', context=context)
             
 
@@ -90,6 +90,3 @@ def user_donations(request):
     return render(request, 'user-activity/user_donations.html', context)
 
 
-@login_required
-def delete_profile(request):
-    pass
