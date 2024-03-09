@@ -39,16 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
 
     # Libraries
     "django_bootstrap5",
     "taggit",
-    'social_django',
 
     # Ourapps
     'campaign.apps.CampaignConfig',
   
 ]
+
 
 
 
@@ -76,10 +77,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
-               
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -142,16 +139,26 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR , "media/")
 
 LOGOUT_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = [
     'account.backends.EmailBackend',
-    'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
   
 ]
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'teamdjango19@gmail.com'
+EMAIL_HOST_PASSWORD = 'Djangoteam123'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'shahd3a7med@gmail.com'
