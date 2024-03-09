@@ -10,11 +10,18 @@ extends "base_generic.html" %} {% load django_bootstrap5 %} {% block content %}
 {% else %}
 <p>Please login to see this page.</p>
 {% endif %} {% endif %}
+
 <div class="container my-5">
+
   <div class="row col-8 col-lg-4 col-md-6 col-sm-8 mx-auto border rounded p-3">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Message:</strong> Your Account activated
+    </div>
     <h1 class="text-center">Login</h1>
+
     <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
+
       <label for="">{{ form.username.label_tag }}</label>
       <div class="text-center">
         <p>{{ form.username }}</p>
