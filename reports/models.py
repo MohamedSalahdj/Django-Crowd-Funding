@@ -15,3 +15,6 @@ class ReportReview(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='review_report')
     reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_review_report')
+
+    def __str__(self):
+        return f"- {self.reporter} - '{self.reason}'"

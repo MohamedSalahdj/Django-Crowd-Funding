@@ -139,14 +139,9 @@ STATICFILES_DIRS = [
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR , "media/")
 
-LOGOUT_REDIRECT_URL = 'login'
-LOGIN_REDIRECT_URL = '/'
 
-AUTHENTICATION_BACKENDS = [
-    'account.backends.EmailBackend',
-    'django.contrib.auth.backends.ModelBackend',
-  
-]
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -166,3 +161,8 @@ DEFAULT_FROM_EMAIL = "Kind Heart Charity teamdjango19@gmail.com"
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = [
+    'account.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]

@@ -87,11 +87,12 @@ def activate(request,uidb64,token):
     except (TypeError,ValueError,OverflowError,User.DoesNotExist):
         myuser = None
 
-    if myuser is not None and generate_token.check_token(myuser,token):
+    if myuser is not None and generate_token.check_token(myuser, token):
+        print('what is hereeeeeeeeeeeee    ',myuser)
         myuser.is_active = True
         # user.profile.signup_confirmation = True
         myuser.save()
-        login(request,myuser)
+        login(request, myuser)
         return redirect('login')
     else:
         return render(request,'registration/activation_failed.html')
