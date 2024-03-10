@@ -79,6 +79,7 @@ def project_detail(request, project_slug):
 @login_required
 def delete_project(request, project_slug):
     try:
+<<<<<<< HEAD
         project = Project.objects.get(slug=project_slug)
         user = request.user
     
@@ -86,6 +87,26 @@ def delete_project(request, project_slug):
             total_donation = Donate.objects.filter(project=project).aggregate(Sum("donation_amount"))['donation_amount__sum']
             if total_donation is None:
                 total_donation = 0
+=======
+        project=Project.objects.get(slug=project_slug)
+        user = request.user
+        
+        if project.owner.id == request.user.id:
+            print("iam here 1")
+            print(project.target)
+            print(Donate.objects.filter(project=project).aggregate(Sum("donation_amount")) < project.target * 0.25)
+            if Donate.objects.filter(project=project).aggregate(Sum("donation_amount")) < project.target * 0.25:
+                Project.delete_project(id)
+                print("iam here2")
+                return redirect('user_projects')
+            else:
+                return render(request, "notfound.html",{'msg':"You Can't delete  this project!"})
+        else:
+            print("iam here 3")
+            return render(request, "notfound.html",{'msg':"You Can't delete  this project!"})
+    except:
+        return render(request, "notfound.html",{'msg':"project Not Found"})
+>>>>>>> 73e40cda02c463038e6bb00b6e0b10cfc17cfb90
 
             if total_donation < float(project.target) * 0.25:
                 project.delete()
@@ -147,16 +168,27 @@ def update_project(request, project_slug):
 def donate_project(request, project_slug):
 
     # try:
+       
         project = get_object_or_404(Project, slug=project_slug)
+        donations_models = Donate.objects.filter(project=project)
+        total_donations = 0
+        for model in donations_models:
+            total_donations += model.donation_amount
+        max_donation = project.target - total_donations
         if request.method == 'POST':
-            form = DonateForm(request.POST)
+            form = DonateForm(request.POST, project = max_donation, donator=request.user)
             if (form.is_valid()):
-                form = form.save()
+                Donate.objects.create(donation_amount=request.POST.get('donation_amount'), project=project, donator=request.user)
                 print("Form saved")
                 project_detail(request, project_slug=project_slug)
                 return HttpResponseRedirect(reverse('project_details', kwargs= {'project_slug':project_slug}))
+            else:
+                form = DonateForm()
+                context = {'form':form, 'donator':request.user, 'project':project, 'total_donations':total_donations, 'max_donation':max_donation}
+                return render(request,'campaign/donate_project.html', context=context )
+            
         form = DonateForm()
-        context = {'form':form}
+        context = {'form':form, 'donator':request.user, 'project':project, 'total_donations':total_donations, 'max_donation':max_donation}
         return render(request,'campaign/donate_project.html', context=context )
     # except:
     #     return render(request, "notfound.html",{'msg':"project Not Found"})

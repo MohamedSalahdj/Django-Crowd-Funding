@@ -4,8 +4,16 @@
 <div class="container my-5">
   <div class="row col-lg-7 col-md-10 mx-auto border rounded p-3">
     <h1 class="text-center">Donate Project</h1>
+    <h5>Project Target: {{project.target}}</h5>
+    <h5>Project Donations: {{total_donations}}</h5>
+    <h5>Max Donation: {{max_donation}}</h5>
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %} {% bootstrap_form form %}
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          {{ form.errors }}
+        </div>
+      {% endif %}
       <button type="submit" class="d-block w-50 btn btn-success mx-auto">
         Donate
       </button>
