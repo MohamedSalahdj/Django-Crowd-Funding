@@ -7,7 +7,7 @@
 <div class="container my-5">
   <div class='row col-lg-7 col-md-10 mx-auto border rounded p-3'>
     <h1 class='text-center'>Sign up</h1>
-    <form action="{% url 'login' %}" method="post" enctype="multipart/form-data" novalidate>
+    <form  method="post" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
       {% bootstrap_form form %}
       {% bootstrap_form form2 %}

@@ -4,6 +4,7 @@ from taggit.managers import TaggableManager
 from django.utils.text import slugify
 from django.utils import timezone
 from django.db.models.aggregates import Avg
+from django import forms
 
 
 
@@ -100,7 +101,6 @@ class Donate(models.Model):
     def __str__(self):
         return f'{self.donation_amount} | {self.project} | {self.donator} | {self.donated_time}'
     
-
 class Review(models.Model):
     comment = models.CharField(max_length=255)
     rate = models.IntegerField()
