@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project, ProjectImage, Review, Donate
+from .models import Project, ProjectImage, Review, Donate, ReplayComment
 
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -19,6 +19,11 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         exclude = ('created_at', 'project', 'user')
+
+class ReplayCommentForm(forms.ModelForm):
+    class Meta:
+        model = ReplayComment
+        exclude = ('created_at', 'review_comment', 'user')
 
 class DonateForm(forms.ModelForm):
     """Rendring the donation as a form for the user"""

@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
-from .models import Category, Project, ProjectImage, Review, Donate
-from .forms import ProjectForm, ProjectImagesForm, ReviewForm, DonateForm
+from .models import Category, Project, ProjectImage, Review, Donate, ReplayComment
+from .forms import ProjectForm, ProjectImagesForm, ReviewForm, DonateForm, ReplayCommentForm
 from reports.forms import  ReportProjectForm
 from django.db.models import Sum, Avg
 
@@ -24,7 +24,10 @@ def show_by_category(request, category_name):
 def projects_list(request):
     try:
         projects=Project.AllProject()
-        return render(request,"campaign/projects_list.html",{'projects':projects})
+        context = {
+            'projects':projects
+            }
+        return render(request,"campaign/projects_list.html",context)
     except:
         return render(request, "notfound.html",{'msg':"projects Not Found"})
 
@@ -35,9 +38,11 @@ def project_detail(request, project_slug):
         similar_five_projects = Project.similar_projects(project)
         all_reviews = Review.objects.filter(project=project)
         categories = Category.objects.all()[:5] 
+
         if request.method == 'POST':
             review_form = ReviewForm(request.POST)
             report_form = ReportProjectForm(request.POST)
+            
             if review_form.is_valid():
                 review_form = review_form.save(commit=False)
                 review_form.project = project
@@ -52,6 +57,7 @@ def project_detail(request, project_slug):
                 report_form.reporter = request.user
                 report_form.save()
                 report_form = ReportProjectForm()
+            
         else:
             review_form = ReviewForm()
             report_form = ReportProjectForm()
@@ -75,7 +81,17 @@ def project_detail(request, project_slug):
     # except:
     #     return render(request, "notfound.html",{'msg':"project Not Found"})
 
-
+def submit_reply(request, review_id):
+    if request.method == 'POST':
+        form = ReplayCommentForm(request.POST)
+        if form.is_valid():
+            review_comment = Review.objects.get(pk=review_id)
+            # print('project slug --->',review_comment.project.slug)
+            replay_comment = form.save(commit=False)
+            replay_comment.review_comment = review_comment
+            replay_comment.user = request.user
+            replay_comment.save()
+            return redirect('/')
 @login_required
 def delete_project(request, project_slug):
     try:
@@ -107,8 +123,11 @@ def create_project(request):
             project =  form.save(commit=False)
             project.owner = request.user
             project.save()
-            projectimagesform.save(project)
+            projectimagesform = projectimagesform.save(commit=False)
+            projectimagesform.project = project
+            projectimagesform.save()
             # form.save_m2m()
+            return redirect('all_projects')
     else:
         form = ProjectForm()
         projectimagesform = ProjectImagesForm()

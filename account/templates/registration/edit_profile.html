@@ -75,6 +75,15 @@
 
                                     {% comment %} {{user_form.as_p}} {% endcomment %}
                                 <button type="submit" class="btn btn-primary">Save changes</button>
+
+                                {% if messages %}
+                                <div class="messages mt-3">
+                                    {% for message in messages %}
+                                        <p{% if message.tags %} class=" text-{{ message.tags }}"{% endif %}>- {{ message }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            
                             </form>
                         </div>
                     </div>

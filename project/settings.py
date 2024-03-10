@@ -160,7 +160,7 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "Kind Heart Charity teamdjango19@gmail.com"
 
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'login'
 
 AUTHENTICATION_BACKENDS = [
     'account.backends.EmailBackend',

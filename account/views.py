@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,authenticate
-from .forms import SignUpForm, SignUpForm2, UserForm
+from .forms import SignUpForm, SignUpForm2, UserForm, ProfileForm
 from django.contrib.auth.models import User
 from .models import Profile
 from campaign.models import Project, ProjectImage, Category, Donate
 from django.contrib.auth.decorators import login_required
 import time
-# for email authintications
+
 from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail
 from project import settings
@@ -124,15 +124,18 @@ def edit_profile(request):
     user_profile = Profile.objects.get(user=request.user)
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = SignUpForm2(request.POST, request.FILES, instance=user_profile)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=user_profile)
         if user_form.is_valid() and profile_form.is_valid():
             user_form = user_form.save()
             profile_form = profile_form.save(commit=False)
             profile_form.user = request.user
             profile_form.save()
+            messages.success(request, 'edit successfully ')
+
+            return redirect('edit_profile')
     else:
         user_form = UserForm(instance=request.user)
-        profile_form = SignUpForm2(instance=user_profile)
+        profile_form = ProfileForm(instance=user_profile)
 
     context = {
         'user_form' : user_form,

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +21,9 @@
             <div class="card">
                 <a class="list-group-item list-group-item-action active"  href="/" role="tab">
                     Home
+                </a>
+                <a class="list-group-item list-group-item-action"  href="{% url 'add_project' %}" role="tab">
+                    ADD Projects
                 </a>
                 <a class="list-group-item list-group-item-action"  href="{% url 'user_projects' %}" role="tab">
                     Your Projects
@@ -71,6 +75,7 @@
                                             <div class="mt-2"></div>
                                             <strong>{{user|title}}</strong>
                                             {% else %}
+                                            <img alt="{{user}}" src="{% static 'images/user.png' %}" width="128" height="128" style="border-radius: 75px;">
                                             <div class="mt-2"></div> 
                                             {% comment %} Here will add profile icon {% endcomment %}
                                             {% comment %} <img alt="{{user}}" src="{{user.image.url}}" width="128" height="128" style="border-radius: 75px;"> {% endcomment %}

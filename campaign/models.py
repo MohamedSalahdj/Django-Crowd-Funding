@@ -86,7 +86,6 @@ class ProjectImage(models.Model):
     image = models.ImageField(upload_to='projects/images',blank=True,null=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_images')
 
-
     def __str__(self):
         return f'{self.project} -- {self.image.url}'
     
@@ -111,3 +110,13 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.user} | {self.project} | 'comment' --> {self.comment}"
+
+class ReplayComment(models.Model):
+    comment = models.CharField(max_length=255)
+    created_at = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(User, related_name='user_replay', on_delete=models.CASCADE)
+    review_comment = models.ForeignKey(Review, on_delete=models.CASCADE,  related_name='replay_comment_review') 
+
+
+    def __str__(self):
+        return f'{self.comment}'

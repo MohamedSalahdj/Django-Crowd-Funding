@@ -15,6 +15,7 @@
   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
   <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet" />
   <link href="{% static 'css/templatemo-kind-heart-charity.css' %}" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Replace the static file paths with the appropriate Django static tags -->
 
   <!-- TemplateMo 581 Kind Heart Charity -->
@@ -27,12 +28,12 @@
         <div class="col-lg-8 col-12 d-flex flex-wrap mt-3">
           <p class="d-flex me-4 mb-0 fs-5">
             <i class="bi-geo-alt me-2 "></i>
-            Kind Heart Charity, Norway
+            Django-team-kol-tmam
           </p>
 
           <p class="d-flex mb-0 mt-2">
             <i class="bi-envelope me-2 "></i>
-            <a href="mailto:info@company.com"> info@company.com </a>
+            <a href="mailto:info@company.com">  Django-team-kol-tmam@company.com </a>
           </p>
         </div>
 
@@ -54,21 +55,23 @@
               <a href="#" class="social-icon-link bi-youtube"></a>
             </li> {% endcomment %} -->
             <li class=" list-unstyle">
-              <div class="d-inline">
+              <div class="d-flex justify-content-evenly">
                 {%if user.id %}
                 <a href="{% url 'user_profile' %}">
                   <p class="d-inline fs-5">Welcome {{user}}
                     <i class="bi bi-person-circle fs-5 d-inline"></i>
                   </p>
+                  <a href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket fs-3 text-light"></i></a>
                 </a>
-                <form method="post" action="{%url 'logout'%}" class=" text-center">
+                {% comment %} <form method="post" action="" class=" text-center">
                   {%csrf_token%}
                   <input class="btn btn-outline-primary d-inline btn-sm" type="submit" value="Logout">
-                </form>
+                </form> {% endcomment %}
+
                 {%else%}
                 <div class="justify-content-md-end d-grid gap-2 d-md-flex mt-2 d-inline">
-                  <a href="{%url 'login'%}" class="btn btn-primary d-inline">Login</a>
-                  <a href="{%url 'signup'%}" class="btn btn-success d-inline">Register</a>
+                  <a href="{%url 'login' %}" ><i class="fa-solid fa-right-to-bracket fs-3 text-light"></i>                  </a>
+                  {% comment %} <a href="{%url 'signup'%}" class="btn btn-success d-inline">Register</a> {% endcomment %}
                 </div>
                 {%endif%}
               </div>
@@ -86,8 +89,8 @@
       <a class="navbar-brand" href="/">
         <img src="{% static 'images/logo.png' %}" class="logo img-fluid" alt="Kind Heart Charity" />
         <span>
-          Kind Heart Charity
-          <small>Non-profit Organization</small>
+          Django-team-kol-tmam
+          <small>3malna kol al requird Plus bouns</small>
         </span>
       </a>
 
@@ -102,9 +105,9 @@
             <a class="nav-link " href="/">Home</a>
           </li>
 
-          <li class="nav-item">
+          {% comment %} <li class="nav-item">
             <a class="nav-link " href="#section_2">About</a>
-          </li>
+          </li> {% endcomment %}
 
           <li class="nav-item">
             <a class="nav-link " href="{% url 'all_projects' %}">Projects</a>
@@ -114,18 +117,14 @@
             <a class="nav-link " href="{% url 'category_list' %}">Categories</a>
           </li>
 
-          <li class="nav-item dropdown">
+          {% comment %} <li class="nav-item dropdown">
             <a class="nav-link  dropdown-toggle" href="#section_5" id="navbarLightDropdownMenuLink"
               role="button" data-bs-toggle="dropdown" aria-expanded="false">News</a>
-          </li>
-
+          </li> {% endcomment %}
+{% comment %} 
           <li class="nav-item">
             <a class="nav-link click-scroll" href="#section_6">Contact</a>
-          </li>
-
-          <li class="nav-item ms-3">
-            <a class="nav-link custom-btn custom-border-btn btn" href="{% url 'all_projects' %}">Donate</a>
-          </li>
+          </li> {% endcomment %}
         </ul>
       </div>
     </div>
@@ -174,12 +173,12 @@
 
           <p class="text-white d-flex">
             <i class="bi-envelope me-2"></i>
-            <a href="mailto:info@yourgmail.com" class="site-footer-link">donate@charity.org</a>
+            <a href="mailto:info@yourgmail.com" class="site-footer-link">Djangokol-tmam@charity.org</a>
           </p>
 
           <p class="text-white d-flex mt-3">
             <i class="bi-geo-alt me-2"></i>
-            Akershusstranda 20, 0150 Oslo, Norway
+            Django-team-kol-tmam
           </p>
 
           <a href="#" class="custom-btn btn mt-3">Get Direction</a>
@@ -228,6 +227,11 @@
   <script src="{% static 'js/click-scroll.js' %}"></script>
   <script src="{% static 'js/counter.js' %}"></script>
   <script src="{% static 'js/custom.js' %}"></script>
+  {% block jsfiles %}
+  
+  {% endblock jsfiles %}
+
+
 </body>
 
 </html>

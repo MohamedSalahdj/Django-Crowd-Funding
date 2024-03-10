@@ -22,12 +22,14 @@ extends "base_generic.html" %} {% load django_bootstrap5 %} {% block content %}
     <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
 
-      <label for="">{{ form.username.label_tag }}</label>
-      <div class="text-center">
+      <div>
+        <label for="" class="ms-0">Email address or username</label>
+        <div class="text-center">
         <p>{{ form.username }}</p>
       </div>
+      </div>
 
-      <label for="" class="mt-3">{{ form.password.label_tag }}</label>
+      <label for="" class="ms-0">Password</label>
       <div class="text-center">
         <p>{{ form.password }}</p>
       </div>

@@ -10,7 +10,7 @@
             <img src="{{donate.project.image.url}}" class="card-img-top d-block mx-auto pt-2 " alt="..." style='width:85%;height:223px'>
             <div class="card-body">
               <h5 class="card-title text-center">{{donate.project}}</h5>
-              <p class="card-text">{{donate.project.details}}</p>
+              <p class="card-text">{{donate.project.details|slice:":80"}}</p> 
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item">Target: <span class='text-secondary'>{{donate.project.target}}</span></li>

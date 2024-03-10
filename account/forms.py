@@ -56,3 +56,11 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name']
+
+class ProfileForm(forms.ModelForm):
+    birth_date = forms.DateField(required=False)
+    facebook_profile = forms.URLField(required=False)
+    country = forms.CharField(max_length=2)
+    class Meta:
+        model = Profile
+        fields = ['phone', 'image', 'birth_date', 'facebook_profile', 'country']

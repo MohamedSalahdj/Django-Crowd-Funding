@@ -34,7 +34,7 @@
               />
 
               <div class="news-category-block d-flex justify-content-around">
-                <a href="#" class="category-block-link">{{project.catergory}}</a>
+                <a href="{% url 'category' project.catergory.slug %}" class="category-block-link">{{project.catergory}}</a>
                 {% if project.target >= total_donations %}
                   <a
                   href="{% url 'donate_project' project.slug %}"
@@ -138,7 +138,23 @@
                   <div class="d-flex mt-2">
                     <a href="{% url 'report_comment' review.id %}" class="author-comment-link me-3">Report</a>
 
-                    <a href="#" class="author-comment-link ">Reply</a>
+                    <a href="#" class="author-comment-link show-replies me-2">Show all Replies</a>
+                    <a href="#" class="author-comment-link" onclick="toggleReplyForm(this)">Reply</a>
+                   
+                    <div class="replies-container" style="display: none;">
+                      <!-- Insert replies here -->
+                      <p>one replay</p>
+                    </div>
+                    
+                    <!-- Hidden reply form -->
+                     <div id="reply-form-{{ review.id }}" class="reply-form" style="display: none;">
+                      <form  method="post" class="custom-form mt-3" action="{% url 'submit_reply' review.id %}">
+                          {% csrf_token %}
+                          <textarea name="comment" rows="2" class="form-control mb-2" placeholder="Enter your reply here"></textarea>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+
+            </div>
 
                   </div>
                 </div>
@@ -191,7 +207,7 @@
                 </div>
               </div> -->
 
-              <form
+              {% comment %} <form
                 method="post"
                 class="custom-form comment-form mt-5"
                 role="form"
@@ -230,7 +246,43 @@
                 <div class="col-lg-3 col-md-4 col-6 ms-auto">
                   <button type="submit" class="form-control">Comment</button>
                 </div>
-              </form>
+              </form> {% endcomment %}
+
+              <form
+    method="post"
+    class="custom-form comment-form mt-5"
+    role="form"
+    enctype="multipart/form-data"
+    novalidate
+>
+    {% csrf_token %}
+    <div class="d-flex justify-content-between">
+        <div>
+            <h6 class="mb-3" for="{{ review_form.comment.id_for_label }}">
+                Write a comment
+            </h6>
+            <p>{{ review_form.comment }}</p>
+            {{ review_form.comment.errors }}
+        </div>
+        <div class="star-rating">
+            <h6 class="mb-2">Rate</h6>
+            <input type="radio" id="star-1" name="rate" value="1" onclick="handleRating(1)" />
+            <label for="star-1">★</label>
+            <input type="radio" id="star-2" name="rate" value="2" onclick="handleRating(2)" />
+            <label for="star-2">★</label>
+            <input type="radio" id="star-3" name="rate" value="3" onclick="handleRating(3)" />
+            <label for="star-3">★</label>
+            <input type="radio" id="star-4" name="rate" value="4" onclick="handleRating(4)" />
+            <label for="star-4">★</label>
+            <input type="radio" id="star-5" name="rate" value="5" onclick="handleRating(5)" />
+            <label for="star-5">★</label>
+        </div>
+    </div>
+    <div id="selected-rating"></div>
+    <div class="col-lg-3 col-md-4 col-6 ms-auto">
+        <button type="submit" class="form-control">Comment</button>
+    </div>
+</form>
 
               <!-- <form
                 class="custom-form comment-form mt-4"
@@ -495,3 +547,46 @@
     }
   </script>
 {% endblock content %}
+
+
+{% block jsfiles %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const showRepliesLink = document.querySelector('.show-replies');
+      const repliesContainer = document.querySelector('.replies-container');
+
+      showRepliesLink.addEventListener('click', function(event) {
+          event.preventDefault(); // Prevent the default behavior of the link
+          repliesContainer.style.display = 'block'; // Show the replies container
+      });
+  });
+
+    function toggleReplyForm(reviewId) {
+      var replyForm = document.getElementById('reply-form-' + reviewId);
+      if (replyForm.style.display === 'none') {
+          replyForm.style.display = 'block';
+      } else {
+          replyForm.style.display = 'none';
+      }
+  }
+
+    function toggleReplyForm(link) {
+      var commentBlock = link.closest('.author-comment');
+      var replyForm = commentBlock.querySelector('.reply-form');
+      replyForm.style.display = (replyForm.style.display === 'none') ? 'block' : 'none';
+  }
+
+    function handleRating(selectedRating) {
+      consle.log('enter star')
+      for (let i = 1; i <= 5; i++) {
+          const star = document.getElementById(`star-${i}`);
+          if (i <= selectedRating) {
+              star.style.color = 'yellow';
+          } else {
+              star.style.color = 'black'; 
+          }
+      }
+  }
+  </script>
+
+{% endblock jsfiles %}

@@ -9,6 +9,8 @@ class ReportProject(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_report')
     reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_project_report')
 
+    def __str__(self):
+        return f'{self.reporter} - {self.project} - {self.reason}'
 
 class ReportReview(models.Model):
     reason = models.TextField()
