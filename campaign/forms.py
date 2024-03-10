@@ -25,4 +25,17 @@ class DonateForm(forms.ModelForm):
 
     class Meta:
         model = Donate
-        exclude = ('donated_time',)
+        exclude = ('donated_time', 'donator', 'project')
+
+    def __init__(self, *args, **kwargs):
+        project = kwargs.pop('project', None)
+        donator = kwargs.pop('donator', None)
+        super(DonateForm, self).__init__(*args, **kwargs)
+        self.project = project
+        self.donator = donator
+
+    def clean_donation_amount(self):
+        donation_amount = self.cleaned_data.get('donation_amount')
+        if donation_amount > self.project:
+            raise forms.ValidationError("Donation amount cannot exceed the project target.")
+        return donation_amount

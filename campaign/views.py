@@ -77,20 +77,26 @@ def project_detail(request, project_slug):
 
 
 @login_required
-def delete_project(request,project_slug):
+def delete_project(request, project_slug):
     try:
-        project=Project.objects.get(slug=project_slug)
-        if project.owner.id == User.id:
-            if Donate.objects.filter(project=project).aggregate(Sum("donation_amount")) < project.target * 0.25:
-                Project.delete_project(id)
-                return redirect('showall')
-            else:
-                return render(request, "notfound.html",{'msg':"You Can't delete  this project!"})
-        else:
-            return render(request, "notfound.html",{'msg':"You Can't delete  this project!"})
-    except:
-        return render(request, "notfound.html",{'msg':"project Not Found"})
+        project = Project.objects.get(slug=project_slug)
+        user = request.user
+    
+        if project.owner == user:
+            total_donation = Donate.objects.filter(project=project).aggregate(Sum("donation_amount"))['donation_amount__sum']
+            if total_donation is None:
+                total_donation = 0
 
+            if total_donation < float(project.target) * 0.25:
+                project.delete()
+                return redirect('user_projects') 
+            else:
+                print("greater than 0.25")
+                return render(request, "campaign/notfound.html", {'msg': "You can't delete this project! It has received donations."})
+        else:
+            return render(request, "campaign/notfound.html", {'msg': "You can't delete this project! You are not the owner."})
+    except Project.DoesNotExist:
+        return render(request, "campaign/notfound.html", {'msg': "Project not found."})
 
 @login_required
 def create_project(request):
@@ -139,18 +145,27 @@ def update_project(request, project_slug):
 
 @login_required
 def donate_project(request, project_slug):
-
     # try:
         project = get_object_or_404(Project, slug=project_slug)
+        donations_models = Donate.objects.filter(project=project)
+        total_donations = 0
+        for model in donations_models:
+            total_donations += model.donation_amount
+        max_donation = project.target - total_donations
         if request.method == 'POST':
-            form = DonateForm(request.POST)
+            form = DonateForm(request.POST, project = max_donation, donator=request.user)
             if (form.is_valid()):
-                form = form.save()
+                Donate.objects.create(donation_amount=request.POST.get('donation_amount'), project=project, donator=request.user)
                 print("Form saved")
                 project_detail(request, project_slug=project_slug)
                 return HttpResponseRedirect(reverse('project_details', kwargs= {'project_slug':project_slug}))
+            else:
+                form = DonateForm()
+                context = {'form':form, 'donator':request.user, 'project':project, 'total_donations':total_donations, 'max_donation':max_donation}
+                return render(request,'campaign/donate_project.html', context=context )
+            
         form = DonateForm()
-        context = {'form':form}
+        context = {'form':form, 'donator':request.user, 'project':project, 'total_donations':total_donations, 'max_donation':max_donation}
         return render(request,'campaign/donate_project.html', context=context )
     # except:
     #     return render(request, "notfound.html",{'msg':"project Not Found"})
@@ -175,9 +190,11 @@ def homepage(request):
         for review in most_reviewed:
             if(Project.objects.filter(id = review['project_id'])):
                 most_reviewed_projects.append(Project.objects.filter(id = review['project_id']))
+       
         context={'latest_projects':latest_projects ,
                 'featured_projects':featured_projects,
                 'most_reviewed_projects':most_reviewed_projects }
+        
         return render(request,"campaign/homepage.html",context)
 
 

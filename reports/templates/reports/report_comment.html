@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block content %}
+
+   <div class='row'>
+    <div class='w-50 mx-auto'>
+        <form
+        method="post"
+        enctype="multipart/form-data"
+        novalidate
+        class="custom-form subscribe-form"
+        >
+        {% csrf_token %}
+         <h5 class="mb-4">Report</h5>
+
+        <input
+        type="text"
+        name="reason"
+        class="form-control"
+        placeholder="why?"
+        required
+        />
+        {% comment %} {{ form.reason }} {% endcomment %}
+        {% comment %} <p>{{ review_form.comment }}</p> {% endcomment %}
+
+        <div class="col-lg-12 col-12">
+        <button type="submit" class="form-control">Report</button>
+        </div>
+        {% if messages %}
+        <div class="messages mt-3">
+            {% for message in messages %}
+                <p{% if message.tags %} class=" text-{{ message.tags }}"{% endif %}>- {{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+        </form>
+    </div>
+
+   </div>
+{% endblock content %}
+
+
+
